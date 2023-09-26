@@ -1,24 +1,18 @@
-import logo from './logo.svg';
+
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import PatientSignUp from './pages/PatientSignUp';
+import TabPage from './tab/tabpage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  <Routes>
+     <Route path="/auth" element={<TabPage/>} >
+      {/* <Route path="login" element={<Login/>}/> */}
+      <Route path="signup" element={<PatientSignUp/>}/>
+      {/* <Route path = "doctor-register" element={<DoctorSignUp/>}/> */}
+      </Route> 
+  </Routes>
   );
 }
 

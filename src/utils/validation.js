@@ -13,13 +13,13 @@ function validName(name,setNameError)
    }
    
 }
-async function validMobile(mobileNo,setMobileError,setMobileErrorMsg)
+async function validMobile(role,mobileNo,setMobileError,setMobileErrorMsg)
 {
    const regex= /^[1-9][0-9]{9}$/;
    if(regex.test(mobileNo))
    {
     setMobileError(false)
-    await axios.get(`http://localhost:4000/accounts?contactNumber=${mobileNo}`).catch(error => {
+    await axios.get(`http://localhost:4000/accounts/${role}?contactNumber=${mobileNo}`).catch(error => {
         setMobileError(true)
         setMobileErrorMsg("Mobile number already exist")})
    }
@@ -30,13 +30,13 @@ async function validMobile(mobileNo,setMobileError,setMobileErrorMsg)
    }
    
 }
-async function validEmail(email,setEmailError,setEmailErrorMsg)
+async function validEmail(role,email,setEmailError,setEmailErrorMsg)
 {
    const regex= /^[_a-zA-Z0-9\.\s\-]+@[a-zA-Z]+\.[a-zA-Z]{2,4}$/;
    if(regex.test(email))
    {
     setEmailError(false)
-    await axios.get(`http://localhost:4000/accounts?email=${email}`).catch(error =>{
+    await axios.get(`http://localhost:4000/accounts/${role}?email=${email}`).catch(error =>{
         setEmailError(true)
     setEmailErrorMsg("Email address already exist")})
    }
@@ -121,6 +121,16 @@ function matchConfirmPassword(password,confirmPassword,setMatchPassword)
       setMatchPassword("false")
    }
 }
+const validId=async(hospitalid,setIdError)=>{
+if(!hospitalid){
+   setIdError("Please enter the hospital id")
+}
+else{
+   const res=await axios.get(`http://localhost:4000/hospital/${hospitalid}`).then(()=>setIdError(false)).catch(err=>{
+      setIdError("Hospital Id is not registered")
+   })
+}
+}
 export{
-    validName,validMobile,validEmail,getDate,validPassword,matchConfirmPassword
+    validName,validMobile,validEmail,getDate,validPassword,matchConfirmPassword,validId
 }

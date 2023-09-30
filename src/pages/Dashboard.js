@@ -11,7 +11,7 @@ export default function Dashboard() {
 const navigate= useNavigate();
 useEffect(()=>{
  ( async()=>{
-    const res=await axios.get("http://localhost:4000/specializations?$limit=100&$sort[name]=1")
+    const res=await axios.get("http://localhost:4000/specializations?limit=100")
     setSpeciality(res.data.data)
     setLoading(false)
 })();
@@ -19,8 +19,8 @@ useEffect(()=>{
 
 console.log(speciality)
   return (
-    <>
-      <div style={{marginTop:"100px"}} >
+    <div style={{backgroundColor:"#fafafa"}}>
+      <div style={{marginTop:"100px"}}>
         <img src={dashboard} alt="image not found" />
       </div>
      {speciality && <Typography variant="h4" component="div" color="#3f51b5" fontWeight="Bold" sx={{ mt: 3, mx: 3 }}>
@@ -47,6 +47,6 @@ console.log(speciality)
       {speciality  && <Box sx={{display:"flex", justifyContent:"end", pr:2}}>
       <Typography onClick={()=>navigate("/specialities")} fontSize={18} underline='none' sx={{cursor:"context-menu"}} >View all Specialities...</Typography>
       </Box>}
-    </>
+    </div>
   )
 }

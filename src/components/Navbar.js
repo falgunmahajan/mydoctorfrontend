@@ -8,8 +8,9 @@ import axios from 'axios';
 
 
 import 'swiper/css';
-import SideBar from './Sidebar';
-// import SymptonsMenu from './SymptonsMenu';
+
+import SymptonsMenu from './SymptonsMenu';
+
 const Navbar = ({handleDrawerToggle}) => {
     const [showDropDown,setShowDropDown]=useState(false);
     const [specialities,setSpecialities]=useState([])
@@ -25,7 +26,7 @@ const Navbar = ({handleDrawerToggle}) => {
     return (
         <div>
             <AppBar component="header" sx={{ backgroundColor: "white", pt: 1, zIndex:1201}} >
-                <Toolbar sx={{flexWrap:"wrap"}}>
+                <Toolbar sx={{flexWrap:"wrap",mb:1}}>
                 <Grid container>
                     <Grid item xs={4} lg={1} order={{xs:1}} >
                     <IconButton
@@ -77,9 +78,8 @@ const Navbar = ({handleDrawerToggle}) => {
                         </Grid>
                     </Grid>
              </Toolbar>
-             {/* <SymptonsMenu/> */}
+             <SymptonsMenu/>
             </AppBar>
-            <SideBar/>
             <Outlet/>
         </div>
     )

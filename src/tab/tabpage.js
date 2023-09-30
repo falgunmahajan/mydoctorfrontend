@@ -14,10 +14,8 @@ export default function TabPage() {
     setValue(newValue);
   };
   return (
-    <Grid container sx={{my:25,backgroundColor:"#fafafa",py:5}}>
+    <Grid container sx={{my:20,backgroundColor:"#fafafa",py:5}}>
  <Grid item xs={0} lg={5} sx={{mx:"auto"}}>
-    {/* {value=="/auth/login"?<img src={login} alt="image not found" />:<img src={registration} alt="image not found" />} */}
-    
   </Grid>
   
   <TabContext value={value}>

@@ -8,7 +8,9 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 
 // import Navbar from './Navbar';
-import { BubbleChart, Margin, Person } from '@mui/icons-material';
+import { BubbleChart, EventNote, Margin, Person, Person2Outlined, Person3Outlined, PersonOutlined } from '@mui/icons-material';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../Redux/createSlice';
 
 const currenturl=window.location.pathname
 export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpen}) {
@@ -16,7 +18,19 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
     const navigate = useNavigate();
     const [url,setUrl]=useState(currenturl)
 
- 
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const status = useSelector((state) => state.status);
+  console.log(status)
+    useEffect(() => {
+      console.log("hello");
+      if (status == "idle") {
+        dispatch(fetchUser());
+      }
+      if (status == "succeeded") {
+        console.log(user);
+      }
+    });
     const drawer = (
         <div>
           
@@ -24,7 +38,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           <Toolbar />
           <Toolbar sx={{ display: { xs: 'block', md: 'none'} }}/>
           <Toolbar sx= {{ display: { xs: 'block', md: 'none'} }} />
-          <List>
+         { user.role!=="doctor" &&<><List>
               <ListItem onClick={()=>{
                     navigate("/");
                     setUrl("/")
@@ -49,7 +63,87 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
                   <ListItemText primary="Specialities" />
                 </ListItemButton>
               </ListItem>
+          </List></>}
+          {user.role=="patient" && <>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                    <EventNote/>
+                  </ListItemIcon>
+                  <ListItemText primary="My Appointments" />
+                </ListItemButton>
+              </ListItem>
           </List>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                    <Person/>
+                  </ListItemIcon>
+                  <ListItemText primary="Account Settings" />
+                </ListItemButton>
+              </ListItem>
+          </List></>}
+          {user.role=="doctor" && <>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                    <PersonOutlined/>
+                  </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </ListItemButton>
+              </ListItem>
+          </List>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                  <PersonOutlined/>
+                  </ListItemIcon>
+                  <ListItemText primary="Doctor Profile" />
+                </ListItemButton>
+              </ListItem>
+          </List>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                  <PersonOutlined/>
+                  </ListItemIcon>
+                  <ListItemText primary="Appointments" />
+                </ListItemButton>
+              </ListItem>
+          </List>
+          <List>
+              <ListItem onClick={()=>{
+                    navigate("/specialities")
+                    setUrl("/specialities")
+                    }} disablePadding>
+                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                  <ListItemIcon>
+                  <PersonOutlined/>
+                  </ListItemIcon>
+                  <ListItemText primary="Reviews" />
+                </ListItemButton>
+              </ListItem>
+          </List></>}
         </div>
       );
     

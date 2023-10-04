@@ -5,10 +5,12 @@ import TabPage from "./tab/tabpage";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Specialities from "./pages/Specialities";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUser } from "./Redux/createSlice";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -16,6 +18,7 @@ function App(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
   return (
     <Routes>
       <Route

@@ -19,6 +19,7 @@ import {
   matchConfirmPassword,
   validEmail,
   validId,
+  validLocation,
   validMobile,
   validName,
   validPassword,
@@ -35,9 +36,8 @@ import axios from "axios";
 export default function SignUp({role}) {
   const [user, setUser] = useState({
     name: "",
-    hospitalId:"",
+    location:"",
     gender: "male",
-    dob: getDate(new Date()),
     mobileNo: "",
     email: "",
     password: "",
@@ -49,7 +49,6 @@ export default function SignUp({role}) {
   const [mobileErrorMsg, setMobileErrorMsg] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [emailErrorMsg, setEmailErrorMsg] = useState("");
-  // const [passwordError,setPasswordError]=useState(false)
   const [passwordErrorMsg, setPasswordErrorMsg] = useState("");
   const [showPasswordRules, setShowPasswordRules] = useState(false);
   const [validLowercase, setValidLowerCase] = useState("initial");
@@ -58,7 +57,7 @@ export default function SignUp({role}) {
   const [validNumber, setValidNumber] = useState("initial");
   const [validLength, setValidLength] = useState("initial");
   const [matchPassword, setMatchPassword] = useState("initial");
-  const [IdError,setIdError]=useState(false)
+  const [locationError,setLocationError]=useState(false)
   const register = async () => {
     if (role == "patient") {
         try {
@@ -66,9 +65,6 @@ export default function SignUp({role}) {
                 firstName: user.name.split(" ")[0],
                 lastName: user.name.split(" ")[1],
                 gender: user.gender,
-                profile: {
-                  dob: user.dob,
-                },
                 email: user.email,
                 password: user.password,
                 contactNumber: user.mobileNo,
@@ -82,13 +78,14 @@ export default function SignUp({role}) {
     if (role == "hospital") {
         try {
             const res=await axios.post("http://localhost:4000/hospital", {
-                firstName: user.name,
+                hospitalName: user.name,
+                location:user.location,
                 email: user.email,
                 password: user.password,
                 contactNumber: user.mobileNo,
               });
               
-              setSuccess(`Signed up successfully! Your Hospital id is ${res.data.Id}. Please save it for Doctor Registration`);
+              setSuccess("Signed up successfully!");
         } catch (error) {
             setSuccess(false)
         }
@@ -99,7 +96,6 @@ export default function SignUp({role}) {
           await axios.post("http://localhost:4000/doctors", {
           firstName: user.name.split(" ")[0],
           lastName: user.name.split(" ")[1],
-          hospitalId:user.hospitalId,
           gender: user.gender,
           email: user.email,
           password: user.password,
@@ -123,8 +119,7 @@ export default function SignUp({role}) {
         setUser({
           name: "",
           gender: "male",
-          hospitalId:"",
-          dob: getDate(new Date()),
+          location:"",
           mobileNo: "",
           email: "",
           password: "",
@@ -187,22 +182,22 @@ setSuccess(false)
         )}
         <br />
         <br />
-       {role==="doctor" && <>
+       {role==="hospital" && <>
        <FormLabel required sx={{ fontSize: 16, color: "black" }}>
-          Hospital Id
+          Address
         </FormLabel><TextField
-          error={IdError}
-          placeholder="Enter Hospital Id"
+          error={locationError}
+          placeholder="Enter Hospital Location"
           fullWidth
-          value={user.hospitalId}
-          inputProps={{ "data-testid": "hospitalId" }}
-          onChange={(e) => setUser({ ...user, hospitalId: e.target.value })}
-          onKeyUp={() => validId(user.hospitalId, setIdError)}
+          value={user.location}
+          inputProps={{ "data-testid": "location" }}
+          onChange={(e) => setUser({ ...user,location: e.target.value })}
+          // onKeyUp={() => validId(user.hospitalId, setIdError)}
           onBlur={(e) =>
-            validId(user.hospitalId, setIdError)}
+            validLocation(user.location, setLocationError)}
         />
-        {IdError && (
-          <span style={{ color: "red" }}>{IdError}</span>
+        {locationError && (
+          <span style={{ color: "red" }}>{locationError}</span>
         )}
         <br />
         <br /></> }
@@ -237,7 +232,7 @@ setSuccess(false)
         )}
        
 
-        {role == "patient" && (
+        {/* {role == "patient" && (
           <>
             <FormLabel required sx={{ fontSize: 16, color: "black" }}>
               Date of birth
@@ -252,7 +247,7 @@ setSuccess(false)
             <br />
         <br />
           </>
-        )}
+        )} */}
        
 
         <FormLabel required sx={{ fontSize: 16, color: "black" }}>

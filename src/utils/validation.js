@@ -131,6 +131,11 @@ else{
    })
 }
 }
+const validLocation=(location,setLocationError)=>{
+if(!location){
+   setLocationError("Please enter a valid location")
+}
+}
 export{
-    validName,validMobile,validEmail,getDate,validPassword,matchConfirmPassword,validId
+    validName,validMobile,validEmail,getDate,validPassword,matchConfirmPassword,validId,validLocation
 }

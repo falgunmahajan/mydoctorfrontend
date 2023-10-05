@@ -42,7 +42,7 @@ export default function Specialities() {
       if(speciality.length)
       {
          specialityGrid= speciality.slice(start,end).map((item,index)=>{
-          return( <Grid item key={index} xs={12}  lg={4} sx={{mb:3}}>
+          return( <Grid item key={index} xs={12}  lg={3} sx={{mb:3}}>
           <Card sx={{ width:390 , height:200 , border:1, borderColor:"divider" }}>
               <CardContent sx={{ textAlign: "center" }}>
                 <img src={`http://my-doctors.net/${item.imageUrl}`} alt="img not found" width="30%" />

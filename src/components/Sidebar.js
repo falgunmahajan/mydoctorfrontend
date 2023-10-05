@@ -1,4 +1,4 @@
-import { Box, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
+import { Box, Collapse, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 
 // import Navbar from './Navbar';
-import { BubbleChart, EventNote, Margin, Person, Person2Outlined, Person3Outlined, PersonOutlined } from '@mui/icons-material';
+import { BubbleChart, EventNote, ExpandLess, ExpandMore, Lock, Margin, Person, Person2Outlined, Person3Outlined, PersonOutlined } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../Redux/createSlice';
 
@@ -20,17 +20,12 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
 
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const status = useSelector((state) => state.status);
-  console.log(status)
-    useEffect(() => {
-      console.log("hello");
-      if (status == "idle") {
-        dispatch(fetchUser());
-      }
-      if (status == "succeeded") {
-        console.log(user);
-      }
-    });
+    const [open, setOpen] = useState(url==="/myprofile");
+
+    const handleClick = () => {
+      setOpen(true);
+    };
+   
     const drawer = (
         <div>
           
@@ -42,6 +37,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
               <ListItem onClick={()=>{
                     navigate("/");
                     setUrl("/")
+                    setOpen(false)
                   }} disablePadding>
                 <ListItemButton  sx={{backgroundColor:(url==="/") ? "silver":"transparent"}}>
                   <ListItemIcon>
@@ -55,6 +51,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
               <ListItem onClick={()=>{
                     navigate("/specialities")
                     setUrl("/specialities")
+                    setOpen(false)
                     }} disablePadding>
                 <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
                   <ListItemIcon>
@@ -69,8 +66,9 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
               <ListItem onClick={()=>{
                     navigate("/specialities")
                     setUrl("/specialities")
+                    setOpen(false)
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:(url==="") ? "silver":"transparent"}}>
                   <ListItemIcon>
                     <EventNote/>
                   </ListItemIcon>
@@ -80,16 +78,40 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           </List>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                    navigate("/myprofile")
+                    handleClick()
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:"transparent"}}>
                   <ListItemIcon>
                     <Person/>
                   </ListItemIcon>
                   <ListItemText primary="Account Settings" />
+
                 </ListItemButton>
+                
               </ListItem>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding   >
+        <ListItemButton disableGutters onClick={()=>{
+                    navigate("/myprofile")
+                    setUrl("/myrofile")
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/myprofile") ? "silver":"transparent"}}>
+            {/* <ListItemIcon>
+              <StarBorde />
+            </ListItemIcon> */}
+            <ListItemText primary="My Profile" />
+          </ListItemButton>
+          <ListItemButton disableGutters onClick={()=>{
+                    navigate("/changepassword")
+                    setUrl("/changepassword")
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/changePassword") ? "silver":"transparent"}}>
+            <ListItemIcon>
+              <Lock />
+            </ListItemIcon>
+            <ListItemText primary="Change Password" />
+          </ListItemButton>
+        </List>
+      </Collapse>
           </List></>}
           {user.role=="doctor" && <>
           <List>

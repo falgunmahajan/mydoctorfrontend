@@ -11,6 +11,8 @@ import Navbar from "./components/Navbar";
 import Specialities from "./pages/Specialities";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./Redux/createSlice";
+import ProfilePage from "./pages/Patient/ProfilePage";
+import ChangePassword from "./pages/Patient/ChangePassword";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -40,6 +42,8 @@ function App(props) {
           {/* <Route path="/Doctors" element={<DoctorDashboard/>}/>
       <Route path="/Patient" element={<PatientDashboard/>}/>*/}
       <Route path ="/specialities" element={<Specialities/>}/> 
+      <Route path ="/myprofile" element={<ProfilePage/>}/> 
+      <Route path ="/changepassword" element={<ChangePassword/>}/> 
         </Route>
         <Route path="/auth" element={<TabPage />}>
           <Route path="login" element={<Login />} />

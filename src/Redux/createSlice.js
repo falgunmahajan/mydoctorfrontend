@@ -32,6 +32,11 @@ const userSlice=createSlice({
         state.user=action.payload;
         state.Login=true
        })
+       .addCase(fetchUser.rejected,(state,action)=>{
+        state.status="idle";
+        state.user=[]
+        state.Login=false
+       })
     }
 })
 export const userReducer=userSlice.reducer

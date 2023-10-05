@@ -1,5 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { AccountCircle, AccountCircleRounded, AccountCircleSharp, AccountCircleTwoTone, Menu, Search } from "@mui/icons-material";
+import React, {  useEffect, useState } from "react";
+import {
+  CalendarToday,
+  ExitToApp,
+  Menu,
+ 
+  Person,
+ 
+  PersonOutlined,
+ 
+  Search,
+} from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -7,8 +17,15 @@ import {
   Button,
   Grid,
   IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Popover,
   TextField,
   Toolbar,
+  Typography,
 } from "@mui/material";
 import myDoctor from "../svg/mydoctor.svg";
 
@@ -20,35 +37,41 @@ import "swiper/css";
 import SymptonsMenu from "./SymptonsMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "../Redux/createSlice";
-import { Dialog, SimpleDialog } from "./Dialog";
+
 
 const Navbar = ({ handleDrawerToggle }) => {
- 
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    const [open, setOpen] = useState(false);
-  
-
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(false);
+    setAnchorEl(null);
   };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   const [showDropDown, setShowDropDown] = useState(false);
   const [specialities, setSpecialities] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-//   const user = useSelector((state) => state.user);
-//   const status = useSelector((state) => state.status);
-const login=useSelector(state=>state.Login)
-console.log(login)
-// console.log(status)
-//   useEffect(() => {
-//       dispatch(fetchUser());
- 
-//   });
+  //   const user = useSelector((state) => state.user);
+  //   const status = useSelector((state) => state.status);
+  const login = useSelector((state) => state.Login);
+  console.log(login);
+  const status = useSelector((state) => state.status);
+  console.log(status)
+    useEffect(() => {
+      console.log("hello");
+      if (status == "idle") {
+        dispatch(fetchUser());
+      }
+      // if (status == "succeeded") {
+      //   console.log(user);
+      // }
+    });
 
   async function showOptions() {
     const res = await axios.get(
@@ -66,7 +89,13 @@ console.log(login)
       >
         <Toolbar sx={{ flexWrap: "wrap", mb: 1 }}>
           <Grid container>
-            <Grid item xs={4} lg={1} order={{ xs: 1}} sx={{display: { sm: "none" } }}>
+            <Grid
+              item
+              xs={4}
+              lg={1}
+              order={{ xs: 1 }}
+              sx={{ display: { sm: "none" } }}
+            >
               <IconButton
                 color="black"
                 aria-label="open drawer"
@@ -77,7 +106,7 @@ console.log(login)
                 <Menu />
               </IconButton>
             </Grid>
-            <Grid item xs={4} lg={4} order={{ xs: 2 }} >
+            <Grid item xs={4} lg={4} order={{ xs: 2 }}>
               <img
                 src={myDoctor}
                 alt="image not found"
@@ -138,18 +167,61 @@ console.log(login)
               item
               xs={4}
               order={{ xs: 3, lg: 4 }}
-              sx={{ textAlign: "right"}}
+              sx={{ textAlign: "right" }}
             >
-             
-                {login ?<Avatar src="/broken-image.jpg" sx={{ml:"auto"}} onClick={handleClickOpen} /> : <Button
-                variant="contained"
-                onClick={() => navigate("/auth/login")}
-                sx={{ backgroundColor: "#3f51b5" }}
-              >Login </Button>}
-             <SimpleDialog
-        open={open}
-        onClose={handleClose}
-      />
+              {login ? (
+                <>
+                <Avatar
+                  src="/broken-image.jpg"
+                  sx={{ ml: "auto" }}
+                  onClick={handleClick}
+                />
+                <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'center',
+                  horizontal: 'left',
+                }}
+              >
+                <List disablePadding >
+                <ListItem disableGutters disablePadding >
+            <ListItemButton >
+                  <PersonOutlined sx={{mr:1}}/>
+              <ListItemText primary="Account Settings"/>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters disablePadding >
+            <ListItemButton >
+                  <CalendarToday sx={{mr:1}}/>
+              <ListItemText primary="My Appointments"/>
+            </ListItemButton>
+          </ListItem>
+          <ListItem disableGutters disablePadding >
+            <ListItemButton onClick={()=>{
+              localStorage.removeItem("user")
+            dispatch(fetchUser())
+              }} >
+                  <ExitToApp sx={{mr:1}}/>
+              <ListItemText primary="Logout"/>
+            </ListItemButton>
+          </ListItem>
+                </List>
+              </Popover>
+              </>
+              ) : (
+                <Button
+                  variant="contained"
+                  onClick={() => navigate("/auth/login")}
+                  sx={{ backgroundColor: "#3f51b5" }}
+                >
+                  Login{" "}
+                </Button>
+              )}
+
+        
             </Grid>
           </Grid>
         </Toolbar>

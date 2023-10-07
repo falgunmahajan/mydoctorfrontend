@@ -8,19 +8,20 @@ import { Outlet, useNavigate } from 'react-router-dom';
 
 
 // import Navbar from './Navbar';
-import { BubbleChart, EventNote, ExpandLess, ExpandMore, Lock, Margin, Person, Person2Outlined, Person3Outlined, PersonOutlined } from '@mui/icons-material';
+import { AccountCircle, BubbleChart, EventNote, ExpandLess, ExpandMore, Lock, Margin, Person, Person2Outlined, Person3Outlined, PersonOutlined } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from '../Redux/createSlice';
+import Footer from './Footer';
 
 const currenturl=window.location.pathname
+
 export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpen}) {
 
     const navigate = useNavigate();
     const [url,setUrl]=useState(currenturl)
-
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user);
-    const [open, setOpen] = useState(url==="/myprofile");
+    const [open, setOpen] = useState(url==="/myprofile"||url==="/changepassword");
 
     const handleClick = () => {
       setOpen(true);
@@ -64,8 +65,8 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           {user.role=="patient" && <>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                    // navigate("/specialities")
+                    // setUrl("/specialities")
                     setOpen(false)
                     }} disablePadding>
                 <ListItemButton sx={{backgroundColor:(url==="") ? "silver":"transparent"}}>
@@ -96,9 +97,9 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
                     navigate("/myprofile")
                     setUrl("/myrofile")
                     }} sx={{ pl: 8 ,backgroundColor:(url==="/myprofile") ? "silver":"transparent"}}>
-            {/* <ListItemIcon>
-              <StarBorde />
-            </ListItemIcon> */}
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
             <ListItemText primary="My Profile" />
           </ListItemButton>
           <ListItemButton disableGutters onClick={()=>{
@@ -172,6 +173,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
       const container = window !== undefined ? () => window().document.body : undefined;
     
       return (
+        <>
         <Box sx={{ display: 'flex'}}>
           <Box
             component="nav" 
@@ -212,5 +214,6 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
             <Outlet/>
           </Box>
         </Box>
+        </>
   )
 }

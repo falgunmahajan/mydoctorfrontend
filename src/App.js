@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUser } from "./Redux/createSlice";
 import ProfilePage from "./pages/Patient/ProfilePage";
 import ChangePassword from "./pages/Patient/ChangePassword";
+import Footer from "./components/Footer";
+import OtpVerification from "./pages/OtpVerification";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -22,6 +24,7 @@ function App(props) {
   };
 
   return (
+    <>
     <Routes>
       <Route
         path="/"
@@ -39,12 +42,12 @@ function App(props) {
           }
         >
           <Route path="/" element={<Dashboard />} />
-          {/* <Route path="/Doctors" element={<DoctorDashboard/>}/>
-      <Route path="/Patient" element={<PatientDashboard/>}/>*/}
       <Route path ="/specialities" element={<Specialities/>}/> 
       <Route path ="/myprofile" element={<ProfilePage/>}/> 
       <Route path ="/changepassword" element={<ChangePassword/>}/> 
+      
         </Route>
+        <Route path="/otpverification" element={<OtpVerification/>}/>
         <Route path="/auth" element={<TabPage />}>
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp role="patient" />} />
@@ -53,6 +56,8 @@ function App(props) {
         </Route>
       </Route>
     </Routes>
+     <Footer/>
+     </>
   );
 }
 

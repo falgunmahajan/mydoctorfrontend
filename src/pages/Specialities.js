@@ -45,7 +45,7 @@ export default function Specialities() {
           return( <Grid item key={index} xs={12}  lg={3} sx={{mb:3}}>
           <Card sx={{ width:390 , height:200 , border:1, borderColor:"divider" }}>
               <CardContent sx={{ textAlign: "center" }}>
-                <img src={`http://my-doctors.net/${item.imageUrl}`} alt="img not found" width="30%" />
+                <img src={`http://localhost:4000/${item.imageUrl}`} alt="img not found" width="30%" />
                 <Typography variant="h6" component="div" sx={{ mt: 3 }}>
                   {item.name}
                 </Typography>

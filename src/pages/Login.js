@@ -26,11 +26,15 @@ export default function Login() {
         password:password,
         // strategy:"local"
       })
+      localStorage.setItem("currentUser",JSON.stringify({
+        [field]:input,
+        password:password,
+      }))
       localStorage.setItem("user",JSON.stringify(res.data))
      
 
       // const role=await res.data.user.role;
-      navigate("/")
+      navigate("/otpverification")
       
     }
      catch(err)  {

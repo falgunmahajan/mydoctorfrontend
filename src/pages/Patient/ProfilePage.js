@@ -1,4 +1,7 @@
-import { Avatar, Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { Avatar, Box, Button, FormControl, FormLabel, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -49,32 +52,72 @@ const ProfilePage = () => {
         <TextField id="outlined-basic" label="Email" variant="outlined" value={`${user.email}`} disabled fullWidth/>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Gender" variant="outlined" value={`${user.gender}`} disabled fullWidth/>
+        <FormControl sx={{ minWidth: 395 }}>
+        <InputLabel id="demo-simple-select-helper-label">Gender</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          fullWidth
+          value={`${user.gender}`}
+          label="Gender"
+          disabled={!edit}
+          // onChange={handleChange}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value="male">Male</MenuItem>
+          <MenuItem value="female">Female</MenuItem>
+        </Select>
+      </FormControl>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Name" variant="outlined" value={`${getName
-        ()}`} disabled={!edit} fullWidth />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker label="Date Of Birth" sx={{ minWidth: 390 }}
+                defaultValue={dayjs(new Date())}
+                disabled={!edit}
+                // onChange={(value) => setUser({ ...user, dob: getDate(value) })}
+              />
+            </LocalizationProvider>
        </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Blood Group" variant="outlined"  disabled={!edit} fullWidth/>
+        <FormControl sx={{ minWidth: 395 }}>
+        <InputLabel id="demo-simple-select-helper-label">Blood Group</InputLabel>
+        <Select
+          labelId="demo-simple-select-helper-label"
+          id="demo-simple-select-helper"
+          fullWidth
+          disabled={!edit}
+          // value={age}
+          label="Blood Group"
+          // onChange={handleChange}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="House No." variant="outlined"  disabled={!edit} fullWidth/>
+        <TextField id="outlined-basic" label="House No./Street/Area" variant="outlined" value={'N/a'} disabled={!edit} fullWidth/>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Colony" variant="outlined"  disabled={!edit} fullWidth/>
+        <TextField id="outlined-basic" label="Colony/Street/Locality" variant="outlined" value="N/a" disabled={!edit} fullWidth/>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="City" variant="outlined"  disabled={!edit} fullWidth />
+        <TextField id="outlined-basic" label="City" variant="outlined" value="N/a"  disabled={!edit} fullWidth />
        </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="State" variant="outlined"  disabled={!edit} fullWidth/>
+        <TextField id="outlined-basic" label="State" variant="outlined" value="N/a" disabled={!edit} fullWidth/>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Country" variant="outlined"  disabled={!edit} fullWidth/>
+        <TextField id="outlined-basic" label="Country" variant="outlined" value="N/a"  disabled={!edit} fullWidth/>
         </Grid>
         <Grid item xs={3} sx={{mt:2,p:1}}>
-        <TextField id="outlined-basic" label="Pin Code" variant="outlined"  disabled={!edit} fullWidth/>
+        <TextField id="outlined-basic" label="Pin Code" variant="outlined"value="N/a" disabled={!edit} fullWidth/>
         </Grid>
       </Grid>
     </div>

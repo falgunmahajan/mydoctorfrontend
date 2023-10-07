@@ -83,9 +83,9 @@ const Navbar = ({ handleDrawerToggle }) => {
   }
   return (
     <div>
-      <AppBar
+      <AppBar 
         component="header"
-        sx={{ backgroundColor: "white", pt: 1, zIndex: 1201 }}
+        sx={{ backgroundColor: "white", pt: 1,  zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar sx={{ flexWrap: "wrap", mb: 1 }}>
           <Grid container>

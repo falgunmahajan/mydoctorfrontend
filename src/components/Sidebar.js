@@ -14,7 +14,7 @@ import { fetchUser } from '../Redux/createSlice';
 import Footer from './Footer';
 
 const currenturl=window.location.pathname
-
+console.log(currenturl)
 export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpen}) {
 
     const navigate = useNavigate();
@@ -65,11 +65,11 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           {user.role=="patient" && <>
           <List>
               <ListItem onClick={()=>{
-                    // navigate("/specialities")
-                    // setUrl("/specialities")
+                    navigate("/myappointments")
+                    setUrl("/myappointments")
                     setOpen(false)
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:(url==="/myappointments") ? "silver":"transparent"}}>
                   <ListItemIcon>
                     <EventNote/>
                   </ListItemIcon>

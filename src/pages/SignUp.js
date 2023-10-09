@@ -294,7 +294,7 @@ setSuccess(false)
           Create Password
         </FormLabel>
         <TextField
-          error={false}
+          error={passwordErrorMsg}
           placeholder="create password"
           type="password"
           fullWidth

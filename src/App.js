@@ -15,6 +15,7 @@ import ProfilePage from "./pages/Patient/ProfilePage";
 import ChangePassword from "./pages/Patient/ChangePassword";
 import Footer from "./components/Footer";
 import OtpVerification from "./pages/OtpVerification";
+import AppointmentsPage from "./pages/Patient/AppointmentsPage";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -45,7 +46,7 @@ function App(props) {
       <Route path ="/specialities" element={<Specialities/>}/> 
       <Route path ="/myprofile" element={<ProfilePage/>}/> 
       <Route path ="/changepassword" element={<ChangePassword/>}/> 
-      
+      <Route path ="/myappointments" element={<AppointmentsPage/>}/> 
         </Route>
         <Route path="/otpverification" element={<OtpVerification/>}/>
         <Route path="/auth" element={<TabPage />}>

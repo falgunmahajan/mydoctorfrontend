@@ -15,37 +15,37 @@ import {
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDate } from "../../utils/validation";
-import axios from "axios"
+import axios from "axios";
 import { CameraAlt, Close } from "@mui/icons-material";
 
 const ProfilePage = () => {
   const [edit, setEdit] = useState(false);
   const user = useSelector((state) => state.user);
   const [img, setImg] = useState("/broken-image.jpg");
-  const [imgFile,setImgFile]=useState("");
-  const [data, setData] = useState({
-    dob: getDate(new Date()),
-    BloodGroup: "",
-    HouseNo: "N/a",
-    Colony: "N/a",
-    city: "N/a",
-    state: "N/a",
-    country: "N/a",
-    pincode: "N/a",
-  });
+  const [imgFile, setImgFile] = useState([]);
+  const [dob,setDob]=useState(getDate(new Date()))
+  const [bloodGroup,setBloodGroup]=useState("")
+  const [houseNo,setHouseNo]=useState("N/a")
+  const [colony,setColony]=useState("N/a")
+  const [city,setCity]=useState("N/a")
+  const [state,setState]=useState("N/a")
+  const [country,setCountry]=useState("N/a")
+  const [pinCode,setPinCode]=useState("N/a")
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [imgErr, setImgErr] = useState(false);
   const disabled =
-    !data.BloodGroup ||
-    !data.HouseNo ||
-    !data.Colony ||
-    !data.city ||
-    !data.state ||
-    !data.country ||
-    !data.pincode;
+    img==="/broken-image.jpg" ||
+    !bloodGroup ||
+    !houseNo ||
+    !colony ||
+    !city ||
+    !state ||
+    !country ||
+    !pinCode;
   console.log(user.contactNumber);
   const getName = () => {
     if (user.lastName) {
@@ -57,24 +57,23 @@ const ProfilePage = () => {
     if (!edit) {
       setEdit(true);
     } else {
+      
       try {
+        const formData=new FormData();
+        formData.append("userId",user.Id)
+        formData.append("dob",dob)
+        formData.append("BloodGroup",bloodGroup)
+        formData.append("HouseNo",houseNo)
+        formData.append("Colony",colony)
+        formData.append("city",city)
+        formData.append("state",state)
+        formData.append("country",country)
+        formData.append("pincode",pinCode)
+        formData.append("image",imgFile)
+        console.log(Object.fromEntries(formData.entries()))
         const res = await axios.post(
-          "http://localhost:4000/updateProfile/patient",
-          {
-            data: data,
-            Id: user.Id,
-          }
-        );
-        setData({
-          dob: getDate(new Date()),
-          BloodGroup: "",
-          HouseNo: "N/a",
-          Colony: "N/a",
-          city: "N/a",
-          state: "N/a",
-          country: "N/a",
-          pincode: "N/a",
-        });
+          "http://localhost:4000/updateProfile/patient",formData);
+       
         setError(false);
         setSuccess("Your profile is succesfully updated");
       } catch (error) {
@@ -83,7 +82,31 @@ const ProfilePage = () => {
       }
     }
   };
+  const handleUpload = (e) => {
+    if (e.target.files.length) {
+      const validExt = ["jpg", "jpeg", "png"];
+      const fileExt = e.target.files[0].name.split(".").at(-1);
+      const fileSize = e.target.files[0].size;
+      const maxSize = 1024 * 1024;
+      console.log(fileExt);
+      if (validExt.includes(fileExt.toLowerCase())) {
+        if (fileSize <= maxSize) {
+          
+          setImgFile(e.target.files[0]);
+  
 
+          setImg(URL.createObjectURL(e.target.files[0]));
+
+          e.target.value = "";
+          setImgErr(false);
+        } else {
+          setImgErr("Image can be less than or equal to 1MB");
+        }
+      } else {
+        setImgErr("Only .jpg, .jpeg, .png images are allowed");
+      }
+    }
+  };
   return (
     <div style={{ backgroundColor: "#fafafa" }}>
       <Grid container sx={{ mt: 15, minHeight: "65vh" }}>
@@ -108,31 +131,21 @@ const ProfilePage = () => {
               <input
                 type="file"
                 hidden
-                value={imgFile}
                 name="Image"
-                onChange={(e) => {
-                  console.log("hello");
-                  console.log(e.target.files);
-                  setImgFile(e.target.files[0])
-                  // if(e.target.files.length){
-
-                    setImg(URL.createObjectURL(e.target.files[0]));
-                  // }
-                  // e.target.value = "";
-                 
-                }}
+                accept=".jpg, .jpeg, .png"
+                onChange={handleUpload}
               />
             </Button>
             <Close
               onClick={() => {
-                console.log("removed")
+                console.log("removed");
                 setImg("/broken-image.jpg");
-                setImgFile("")
-                console.log(imgFile)
+                setImgFile("");
+                console.log(imgFile);
               }}
             />
           </Box>
-
+          {imgErr && <span style={{ color: "red" }}>{imgErr}</span>}
           <Typography sx={{ fontSize: "12px", color: "grey", mt: 2 }}>
             JPEG, JPG or PNG image less than 1 MB
             <br />
@@ -203,7 +216,7 @@ const ProfilePage = () => {
               sx={{ minWidth: 390 }}
               defaultValue={dayjs(new Date())}
               disabled={!edit}
-              onChange={(value) => setData({ ...data, dob: getDate(value) })}
+              onChange={(value) => setDob( getDate(value) )}
             />
           </LocalizationProvider>
         </Grid>
@@ -217,9 +230,9 @@ const ProfilePage = () => {
               id="demo-simple-select-helper"
               fullWidth
               disabled={!edit}
-              value={data.BloodGroup}
+              value={bloodGroup}
               label="Blood Group"
-              onChange={(e) => setData({ ...data, BloodGroup: e.target.value })}
+              onChange={(e) =>setBloodGroup(e.target.value )}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -240,9 +253,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="House No./Street/Area"
             variant="outlined"
-            value={data.HouseNo}
+            value={houseNo}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, HouseNo: e.target.value })}
+            onChange={(e) => setHouseNo(e.target.value )}
             fullWidth
           />
         </Grid>
@@ -251,9 +264,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="Colony/Street/Locality"
             variant="outlined"
-            value={data.Colony}
+            value={colony}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, Colony: e.target.value })}
+            onChange={(e) => setColony( e.target.value )}
             fullWidth
           />
         </Grid>
@@ -262,9 +275,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="City"
             variant="outlined"
-            value={data.city}
+            value={city}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, city: e.target.value })}
+            onChange={(e) => setCity(e.target.value )}
             fullWidth
           />
         </Grid>
@@ -273,9 +286,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="State"
             variant="outlined"
-            value={data.state}
+            value={state}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, state: e.target.value })}
+            onChange={(e) => setState(e.target.value )}
             fullWidth
           />
         </Grid>
@@ -284,9 +297,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="Country"
             variant="outlined"
-            value={data.country}
+            value={country}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, country: e.target.value })}
+            onChange={(e) => setCountry(e.target.value )}
             fullWidth
           />
         </Grid>
@@ -295,9 +308,9 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="Pin Code"
             variant="outlined"
-            value={data.pincode}
+            value={pinCode}
             disabled={!edit}
-            onChange={(e) => setData({ ...data, pincode: e.target.value })}
+            onChange={(e) => setPinCode(e.target.value )}
             fullWidth
           />
         </Grid>

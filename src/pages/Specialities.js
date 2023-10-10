@@ -68,7 +68,7 @@ export default function Specialities() {
   
    
   return (
-    <div>
+    <div style={{minHeight:"68vh"}}>
         <Grid container spacing={2} sx={{pl:3, mt:10, mb:3, justifyContent:"space-between"}}>
           {speciality &&  <Grid item xs={12} md={4}>
       <Typography variant="h4" component="div" color="#3f51b5" fontWeight="Bold">

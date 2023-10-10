@@ -80,6 +80,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           <List>
               <ListItem onClick={()=>{
                     navigate("/myprofile")
+                    setUrl("/myprofile")
                     handleClick()
                     }} disablePadding>
                 <ListItemButton sx={{backgroundColor:"transparent"}}>
@@ -95,7 +96,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
         <List component="div" disablePadding   >
         <ListItemButton disableGutters onClick={()=>{
                     navigate("/myprofile")
-                    setUrl("/myrofile")
+                    setUrl("/myprofile")
                     }} sx={{ pl: 8 ,backgroundColor:(url==="/myprofile") ? "silver":"transparent"}}>
             <ListItemIcon>
               <AccountCircle />
@@ -105,7 +106,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           <ListItemButton disableGutters onClick={()=>{
                     navigate("/changepassword")
                     setUrl("/changepassword")
-                    }} sx={{ pl: 8 ,backgroundColor:(url==="/changePassword") ? "silver":"transparent"}}>
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/changepassword") ? "silver":"transparent"}}>
             <ListItemIcon>
               <Lock />
             </ListItemIcon>

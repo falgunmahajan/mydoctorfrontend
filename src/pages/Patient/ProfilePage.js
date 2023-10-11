@@ -26,7 +26,7 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.user);
   const [img, setImg] = useState("/broken-image.jpg");
   const [imgFile, setImgFile] = useState([]);
-  const [dob,setDob]=useState(getDate(new Date()))
+  const [dob,setDob]=useState()
   const [bloodGroup,setBloodGroup]=useState("")
   const [houseNo,setHouseNo]=useState("N/a")
   const [colony,setColony]=useState("N/a")
@@ -37,6 +37,12 @@ const ProfilePage = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [imgErr, setImgErr] = useState(false);
+  useEffect(()=>{
+    
+    setImg(`http://localhost:4000/${user.image}`)
+    setDob(getDate(new Date(user.dob)))
+    setBloodGroup(user.BloodGroup)
+  },[])
   const disabled =
     img==="/broken-image.jpg" ||
     !bloodGroup ||
@@ -48,10 +54,10 @@ const ProfilePage = () => {
     !pinCode;
   console.log(user.contactNumber);
   const getName = () => {
-    if (user.lastName) {
-      return `${user.firstName} ${user.lastName}`;
+    if (user.user.lastName) {
+      return `${user.user.firstName} ${user.user.lastName}`;
     }
-    return user.firstName;
+    return user.user.firstName;
   };
   const handleSubmit = async () => {
     if (!edit) {
@@ -177,7 +183,7 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="Phone Number"
             variant="outlined"
-            value={`${user.contactNumber}`}
+            value={`${user.user.contactNumber}`}
             disabled
             fullWidth
           />
@@ -187,7 +193,7 @@ const ProfilePage = () => {
             id="outlined-basic"
             label="Email"
             variant="outlined"
-            value={`${user.email}`}
+            value={`${user.user.email}`}
             disabled
             fullWidth
           />
@@ -199,7 +205,7 @@ const ProfilePage = () => {
               labelId="demo-simple-select-helper-label"
               id="demo-simple-select-helper"
               fullWidth
-              value={`${user.gender}`}
+              value={`${user.user.gender}`}
               label="Gender"
               disabled
               // onChange={handleChange}

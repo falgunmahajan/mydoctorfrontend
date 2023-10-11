@@ -26,7 +26,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
     const handleClick = () => {
       setOpen(true);
     };
-   
+console.log(user)
     const drawer = (
         <div>
           
@@ -34,7 +34,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
           <Toolbar />
           <Toolbar sx={{ display: { xs: 'block', md: 'none'} }}/>
           <Toolbar sx= {{ display: { xs: 'block', md: 'none'} }} />
-         { user.role!=="doctor" &&<><List>
+         { !user.length!=="doctor" &&<><List>
               <ListItem onClick={()=>{
                     navigate("/");
                     setUrl("/")
@@ -62,7 +62,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
                 </ListItemButton>
               </ListItem>
           </List></>}
-          {user.role=="patient" && <>
+          {user.user.role=="patient" && <>
           <List>
               <ListItem onClick={()=>{
                     navigate("/myappointments")
@@ -115,7 +115,7 @@ export default function SideBar({handleDrawerToggle,window,drawerWidth,mobileOpe
         </List>
       </Collapse>
           </List></>}
-          {user.role=="doctor" && <>
+          {user.user.role=="doctor" && <>
           <List>
               <ListItem onClick={()=>{
                     navigate("/specialities")

@@ -66,6 +66,7 @@ const Navbar = ({ handleDrawerToggle }) => {
     useEffect(() => {
       console.log("hello");
       if (status == "idle") {
+        console.log("status")
         dispatch(fetchUser());
       }
       // if (status == "succeeded") {

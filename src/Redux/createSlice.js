@@ -8,9 +8,12 @@ const initialState={
 }
 export const fetchUser=createAsyncThunk("user/fetchUser",async()=>{
     // try{
-        const token = JSON.parse(localStorage.getItem("user")).accessToken
+        console.log("hello")
+        const user=JSON.parse(localStorage.getItem("user"))
+        console.log(user)
+        const token = user.accessToken
         console.log(token)
-        const res=await axios.get("http://localhost:4000/authorization",{
+        const res=await axios.get(`http://localhost:4000/authorization/${user.user.role}`,{
             headers:{
                 Authorization:token
             }

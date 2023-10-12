@@ -93,14 +93,18 @@ export default function SignUp({role}) {
       }
       if (role == "doctor") {
         try {
-          await axios.post("http://localhost:4000/doctors", {
-          firstName: user.name.split(" ")[0],
-          lastName: user.name.split(" ")[1],
-          gender: user.gender,
-          email: user.email,
-          password: user.password,
-          contactNumber: user.mobileNo,
-        });
+          const fullName=user.name.split(" ")
+          console.log(fullName)
+          console.log(fullName.slice(0,-1))
+          console.log(fullName.slice(-1))
+        //   await axios.post("http://localhost:4000/doctors", {
+        //   firstName:fullName.slice(0,fullName.length) ,
+        //   lastName: fullName.slice(fullName.length),
+        //   gender: user.gender,
+        //   email: user.email,
+        //   password: user.password,
+        //   contactNumber: user.mobileNo,
+        // });
         setSuccess("Signed up successfully!");
         } catch (error) {
             setSuccess(false)

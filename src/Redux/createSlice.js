@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 
 const initialState={
-    user:[],
+    user:"",
     Login:false,
     status:"idle"
 }
@@ -37,7 +37,7 @@ const userSlice=createSlice({
        })
        .addCase(fetchUser.rejected,(state,action)=>{
         state.status="idle";
-        state.user=[]
+        state.user=""
         state.Login=false
        })
     }

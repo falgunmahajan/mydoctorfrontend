@@ -26,7 +26,7 @@ const ProfilePage = () => {
   const user = useSelector((state) => state.user);
   const [img, setImg] = useState("/broken-image.jpg");
   const [imgFile, setImgFile] = useState([]);
-  const [dob,setDob]=useState()
+  const [dob,setDob]=useState(getDate(new Date()))
   const [bloodGroup,setBloodGroup]=useState("")
   const [houseNo,setHouseNo]=useState("N/a")
   const [colony,setColony]=useState("N/a")
@@ -38,10 +38,19 @@ const ProfilePage = () => {
   const [error, setError] = useState(false);
   const [imgErr, setImgErr] = useState(false);
   useEffect(()=>{
-    
-    setImg(`http://localhost:4000/${user.image}`)
-    setDob(getDate(new Date(user.dob)))
-    setBloodGroup(user.BloodGroup)
+    if(user){
+      setImg(`http://localhost:4000/${user.image}`)
+      setDob(getDate(new Date(user.dob)))
+      setBloodGroup(user.BloodGroup)
+      setHouseNo(user.HouseNo)
+      setColony(user.Colony)
+      setCity(user.city)
+      setState(user.state)
+      setCountry(user.country)
+      setPinCode(user.pincode)
+    }
+ 
+  
   },[])
   const disabled =
     img==="/broken-image.jpg" ||
@@ -220,7 +229,7 @@ const ProfilePage = () => {
             <DatePicker
               label="Date Of Birth"
               sx={{ minWidth: 390 }}
-              defaultValue={dayjs(new Date())}
+              value={dayjs(new Date(dob))}
               disabled={!edit}
               onChange={(value) => setDob( getDate(value) )}
             />

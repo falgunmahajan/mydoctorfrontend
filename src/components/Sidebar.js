@@ -34,7 +34,7 @@ console.log(user)
           <Toolbar />
           <Toolbar sx={{ display: { xs: 'block', md: 'none'} }}/>
           <Toolbar sx= {{ display: { xs: 'block', md: 'none'} }} />
-         { !user.length!=="doctor" &&<><List>
+         { (!user || user.user.role!=="doctor") &&<><List>
               <ListItem onClick={()=>{
                     navigate("/");
                     setUrl("/")
@@ -62,7 +62,7 @@ console.log(user)
                 </ListItemButton>
               </ListItem>
           </List></>}
-          {user.user.role=="patient" && <>
+          {user &&user.user.role=="patient" && <>
           <List>
               <ListItem onClick={()=>{
                     navigate("/myappointments")
@@ -115,13 +115,14 @@ console.log(user)
         </List>
       </Collapse>
           </List></>}
-          {user.user.role=="doctor" && <>
+          {user &&user.user.role=="doctor" && <>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                    navigate("/doctordashboard")
+                    setUrl("/doctordashboard")
+                    setOpen(false)
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:(url==="/doctordashboard") ? "silver":"transparent"}}>
                   <ListItemIcon>
                     <PersonOutlined/>
                   </ListItemIcon>
@@ -131,23 +132,56 @@ console.log(user)
           </List>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                      navigate("/doctorprofile")
+                      setUrl("/doctorprofile")
+                      handleClick()
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:"transparent"}}>
                   <ListItemIcon>
                   <PersonOutlined/>
                   </ListItemIcon>
                   <ListItemText primary="Doctor Profile" />
                 </ListItemButton>
               </ListItem>
+              <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding   >
+        <ListItemButton disableGutters onClick={()=>{
+                    navigate("/doctorprofile")
+                    setUrl("/doctorprofile")
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/doctorprofile") ? "silver":"transparent"}}>
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary="Personal Information" />
+          </ListItemButton>
+          <ListItemButton disableGutters onClick={()=>{
+                    navigate("/qualifications")
+                    setUrl("/qualifications")
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/qualifications") ? "silver":"transparent"}}>
+            <ListItemIcon>
+              <Lock />
+            </ListItemIcon>
+            <ListItemText primary="Qualifications" />
+          </ListItemButton>
+          <ListItemButton disableGutters onClick={()=>{
+                    navigate("/experience")
+                    setUrl("/experience")
+                    }} sx={{ pl: 8 ,backgroundColor:(url==="/experience") ? "silver":"transparent"}}>
+            <ListItemIcon>
+              <Lock />
+            </ListItemIcon>
+            <ListItemText primary="Experience" />
+          </ListItemButton>
+        </List>
+      </Collapse>
           </List>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                    navigate("/doctorappointments")
+                    setUrl("/doctorappointments")
+                    setOpen(false)
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:(url==="/doctorappointments") ? "silver":"transparent"}}>
                   <ListItemIcon>
                   <PersonOutlined/>
                   </ListItemIcon>
@@ -157,10 +191,11 @@ console.log(user)
           </List>
           <List>
               <ListItem onClick={()=>{
-                    navigate("/specialities")
-                    setUrl("/specialities")
+                    navigate("/")
+                    setUrl("/")
+                    setOpen(false)
                     }} disablePadding>
-                <ListItemButton sx={{backgroundColor:(url==="/specialities") ? "silver":"transparent"}}>
+                <ListItemButton sx={{backgroundColor:(url==="/") ? "silver":"transparent"}}>
                   <ListItemIcon>
                   <PersonOutlined/>
                   </ListItemIcon>

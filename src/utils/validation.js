@@ -2,7 +2,7 @@ import axios from "axios";
 
 function validName(name,setNameError)
 {
-   const regex= /^[a-zA-Z\s]+$/;
+   const regex= /^[a-zA-Z\s\.]+$/;
    if(regex.test(name))
    {
     setNameError(false)
@@ -32,7 +32,7 @@ async function validMobile(role,mobileNo,setMobileError,setMobileErrorMsg)
 }
 async function validEmail(role,email,setEmailError,setEmailErrorMsg)
 {
-   const regex= /^[_a-zA-Z0-9\.\s\-]+@[a-zA-Z]+\.[a-zA-Z]{2,4}$/;
+   const regex= /^[_a-zA-Z0-9\.\s\-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/;
    if(regex.test(email))
    {
     setEmailError(false)

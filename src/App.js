@@ -16,6 +16,11 @@ import ChangePassword from "./pages/Patient/ChangePassword";
 import Footer from "./components/Footer";
 import OtpVerification from "./pages/OtpVerification";
 import AppointmentsPage from "./pages/Patient/AppointmentsPage";
+import DoctorDashboard from "./pages/Doctor/DoctorDashboard";
+import DoctorProfile from "./pages/Doctor/DoctorProfile";
+import Qualifications from "./pages/Doctor/Qualifications";
+import Experience from "./pages/Doctor/Experience";
+import Appointments from "./pages/Doctor/Appointments";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -47,6 +52,11 @@ function App(props) {
       <Route path ="/myprofile" element={<ProfilePage/>}/> 
       <Route path ="/changepassword" element={<ChangePassword/>}/> 
       <Route path ="/myappointments" element={<AppointmentsPage/>}/> 
+      <Route path="/doctordashboard" element={<DoctorDashboard/>}/>
+      <Route path="/doctorprofile" element={<DoctorProfile/>}/>
+      <Route path="/qualifications" element={<Qualifications/>}/>
+      <Route path="/Experience" element={<Experience/>}/>
+      <Route path="/doctorappointments" element={<Appointments/>}/>
         </Route>
         <Route path="/otpverification" element={<OtpVerification/>}/>
         <Route path="/auth" element={<TabPage />}>

@@ -43,13 +43,14 @@ const Navbar = ({ handleDrawerToggle }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
+    console.log("some")
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+ console.log(anchorEl)
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
@@ -73,7 +74,7 @@ const Navbar = ({ handleDrawerToggle }) => {
       //   console.log(user);
       // }
     });
-
+console.log("navbar")
   async function showOptions() {
     const res = await axios.get(
       "http://localhost:4000/specializations?$limit=100&$sort[name]=1"

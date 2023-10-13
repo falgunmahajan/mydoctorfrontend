@@ -45,7 +45,7 @@ const OtpVerification = () => {
   };
   return (
     <Grid container sx={{ mt: 25, minHeight:"67vh" }}>
-      <Grid
+      <Grid item
         xs={4}
         sx={{
           m: "auto",

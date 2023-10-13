@@ -42,7 +42,7 @@ const ChangePassword = () => {
   const handleSubmit=async()=>{
     try {
       const res=await axios.post("http://localhost:4000/changepassword",{
-        id:user.Id,
+        id:user.user.Id,
         oldPassword:oldPassword,
         newPassword:newPassword,
       })

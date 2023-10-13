@@ -59,22 +59,6 @@ export default function SignUp({role}) {
   const [matchPassword, setMatchPassword] = useState("initial");
   const [locationError,setLocationError]=useState(false)
   const register = async () => {
-    if (role == "patient") {
-        try {
-           await axios.post("http://localhost:4000/patients", {
-                firstName: user.name.split(" ")[0],
-                lastName: user.name.split(" ")[1],
-                gender: user.gender,
-                email: user.email,
-                password: user.password,
-                contactNumber: user.mobileNo,
-              });
-              setSuccess("Signed up successfully!");
-        } catch (error) {
-            setSuccess(false)
-        }
-     
-    }
     if (role == "hospital") {
         try {
             const res=await axios.post("http://localhost:4000/hospital", {
@@ -91,20 +75,22 @@ export default function SignUp({role}) {
         }
        
       }
-      if (role == "doctor") {
+    else {
         try {
           const fullName=user.name.split(" ")
           console.log(fullName)
-          console.log(fullName.slice(0,-1))
-          console.log(fullName.slice(-1))
-        //   await axios.post("http://localhost:4000/doctors", {
-        //   firstName:fullName.slice(0,fullName.length) ,
-        //   lastName: fullName.slice(fullName.length),
-        //   gender: user.gender,
-        //   email: user.email,
-        //   password: user.password,
-        //   contactNumber: user.mobileNo,
-        // });
+          let first="";
+         for(let i=0; i<fullName.slice(0,-1).length; i++){
+          first+=`${fullName.slice(0,-1)[i]} `
+         }
+          await axios.post(`http://localhost:4000/${role}`, {
+          firstName:first ,
+          lastName: fullName.slice(-1)[0],
+          gender: user.gender,
+          email: user.email,
+          password: user.password,
+          contactNumber: user.mobileNo,
+        });
         setSuccess("Signed up successfully!");
         } catch (error) {
             setSuccess(false)

@@ -28,8 +28,8 @@ const ProfilePage = () => {
   const [imgFile, setImgFile] = useState([]);
   const [dob,setDob]=useState(getDate(new Date()))
   const [bloodGroup,setBloodGroup]=useState("")
-  const [houseNo,setHouseNo]=useState("N/a")
-  const [colony,setColony]=useState("N/a")
+  const [houseNo,setHouseNo]=useState('N/a')
+  const [colony,setColony]=useState('N/a')
   const [city,setCity]=useState("N/a")
   const [state,setState]=useState("N/a")
   const [country,setCountry]=useState("N/a")
@@ -37,21 +37,22 @@ const ProfilePage = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [imgErr, setImgErr] = useState(false);
+  const status = useSelector(state=>state.status)
+  // console.log(houseNo,colony,dob)
+  console.log(error)
   useEffect(()=>{
-    if(user){
-      setImg(`http://localhost:4000/${user.image}`)
-      setDob(getDate(new Date(user.dob)))
-      setBloodGroup(user.BloodGroup)
-      setHouseNo(user.HouseNo)
-      setColony(user.Colony)
-      setCity(user.city)
-      setState(user.state)
-      setCountry(user.country)
-      setPinCode(user.pincode)
-    }
+     user.image && setImg(`http://localhost:4000/${user.image}`)
+     user.dob && setDob(getDate(new Date(user.dob)))
+     user.BloodGroup &&setBloodGroup(user.BloodGroup)
+     user.HouseNo &&  setHouseNo(user.HouseNo)
+     user.Colony && setColony(user.Colony)
+     user.city &&  setCity(user.city)
+     user.state && setState(user.state)
+     user.country &&  setCountry(user.country)
+     user.pincode && setPinCode(user.pincode)
  
   
-  },[])
+  },[status])
   const disabled =
     img==="/broken-image.jpg" ||
     !bloodGroup ||
@@ -61,7 +62,7 @@ const ProfilePage = () => {
     !state ||
     !country ||
     !pinCode;
-  console.log(user.contactNumber);
+  console.log(user);
   const getName = () => {
     if (user.user.lastName) {
       return `${user.user.firstName} ${user.user.lastName}`;
@@ -75,7 +76,7 @@ const ProfilePage = () => {
       
       try {
         const formData=new FormData();
-        formData.append("userId",user.Id)
+        formData.append("userId",user.user.Id)
         formData.append("dob",dob)
         formData.append("BloodGroup",bloodGroup)
         formData.append("HouseNo",houseNo)
@@ -91,6 +92,7 @@ const ProfilePage = () => {
        
         setError(false);
         setSuccess("Your profile is succesfully updated");
+        setEdit(false)
       } catch (error) {
         setError(error.response.data.message);
         setSuccess(false);
@@ -123,7 +125,11 @@ const ProfilePage = () => {
     }
   };
   return (
+    
+      
+    
     <div style={{ backgroundColor: "#fafafa" }}>
+      {user && 
       <Grid container sx={{ mt: 15, minHeight: "65vh" }}>
         <Grid item xs={12}>
           {error && <Alert severity="error">{error}</Alert>}
@@ -329,7 +335,7 @@ const ProfilePage = () => {
             fullWidth
           />
         </Grid>
-      </Grid>
+      </Grid>}
     </div>
   );
 };

@@ -205,6 +205,7 @@ console.log("navbar")
             <ListItemButton onClick={()=>{
               localStorage.removeItem("user")
             dispatch(fetchUser())
+            navigate("/")
               }} >
                   <ExitToApp sx={{mr:1}}/>
               <ListItemText primary="Logout"/>

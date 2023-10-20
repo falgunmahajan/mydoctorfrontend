@@ -249,6 +249,23 @@ export default function SideBar({
                 <ListItemButton
                   disableGutters
                   onClick={() => {
+                    navigate("/professionalinformation");
+                    setUrl("/professionalinformation");
+                  }}
+                  sx={{
+                    pl: 8,
+                    backgroundColor:
+                      url === "/professionalinformation" ? "silver" : "transparent",
+                  }}
+                >
+                  <ListItemIcon>
+                    <AccountCircle />
+                  </ListItemIcon>
+                  <ListItemText primary="Professional Information" />
+                </ListItemButton>
+                <ListItemButton
+                  disableGutters
+                  onClick={() => {
                     navigate("/qualifications");
                     setUrl("/qualifications");
                   }}

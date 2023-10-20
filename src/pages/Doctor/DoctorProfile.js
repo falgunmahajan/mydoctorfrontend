@@ -165,7 +165,7 @@ const DoctorProfile = () => {
               fullWidth
             />
           </Grid>
-          <Grid xs={12}>
+          <Grid item xs={12}>
             <Autocomplete
               multiple
               disabled={!edit}

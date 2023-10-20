@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const Qualifications = () => {
@@ -16,6 +16,7 @@ const Qualifications = () => {
   const [edit, setEdit] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const status = useSelector(state=>state.status)
   const [qualification, setQualification] = useState([
     {
       degree: "",
@@ -26,6 +27,9 @@ const Qualifications = () => {
       yearErr: "",
     },
   ]);
+  useEffect(()=>{
+user.Qualification && setQualification(user.Qualification)
+  },[status])
   const disabledSubmit = () => {
     let disabled = false;
     qualification.map((item) => {
@@ -108,7 +112,7 @@ const Qualifications = () => {
           }
         );
         setError(false);
-        setSuccess("Your profile is succesfully updated");
+        setSuccess("Your qualifications are succesfully updated");
         setEdit(false);
       } catch (error) {
         setError(error.response.data.message);

@@ -25,7 +25,7 @@ const ProfilePage = () => {
   const [edit, setEdit] = useState(false);
   const user = useSelector((state) => state.user);
   const [img, setImg] = useState("/broken-image.jpg");
-  const [imgFile, setImgFile] = useState([]);
+  const [imgFile, setImgFile] = useState();
   const [dob,setDob]=useState(getDate(new Date()))
   const [bloodGroup,setBloodGroup]=useState("")
   const [houseNo,setHouseNo]=useState('N/a')
@@ -85,9 +85,12 @@ const ProfilePage = () => {
         formData.append("state",state)
         formData.append("country",country)
         formData.append("pincode",pinCode)
-        formData.append("image",imgFile)
+        if(imgFile){
+
+          formData.append("image",imgFile)
+        }
         console.log(Object.fromEntries(formData.entries()))
-        const res = await axios.post(
+        const res = await axios.put(
           "http://localhost:4000/updateProfile/patient",formData);
        
         setError(false);

@@ -48,7 +48,8 @@ export default function SideBar({
       url === "/changepassword" ||
       url === "/doctorprofile" ||
       url === "/qualifications" ||
-      url === "/experience"
+      url === "/experience"||
+      url==="/professionalinformation"
   );
 
   const handleClick = () => {

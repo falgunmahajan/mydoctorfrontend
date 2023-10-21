@@ -12,6 +12,7 @@ import {
 } from "@mui/icons-material";
 import {
   AppBar,
+  Autocomplete,
   Avatar,
   Box,
   Button,
@@ -123,6 +124,17 @@ console.log("navbar")
               order={{ xs: 4, lg: 3 }}
               sx={{ backgroundColor: "#fafafa", display: "flex" }}
             >
+               {/* <Autocomplete
+              
+              id="combo-box-demo"
+              options={specialities}
+              // value={item.hospital}
+              getOptionLabel={(option) => option.name}
+            //   filterSelectedOptions
+              renderInput={(params) => (
+                <TextField fullWidth  variant="standard" {...params} placeholder="Select a Service"/>
+              )}
+            /> */}
               <Box>
                 <TextField
                   variant="standard"

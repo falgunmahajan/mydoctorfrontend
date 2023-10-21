@@ -26,6 +26,7 @@ const Experience = () => {
   const [specialities, setSpecialities] = useState([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const status = useSelector(state=>state.status)
   const [experience, setExperience] = useState([
     {
       position: "",
@@ -44,7 +45,10 @@ const Experience = () => {
       );
       setSpeciality(res.data.data);
     })();
-  }, []);
+    user.specialities && setSpecialities(user.specialities) 
+    user.licenceNumber && setLicenceNumber(user.licenceNumber)
+    user.experience && setExperience(user.experience)
+  }, [status]);
   const isValidLicenceNumber = (e) => {
     if (/^[0-9a-zA-Z]*$/.test(e.target.value) && e.target.value.length > 3) {
       setLicenceErr(false);
@@ -90,15 +94,12 @@ const Experience = () => {
         delete item.hospitalErr;
         return item;
       });
-      specialities.map(item=>{
-        delete item.name;
-        return item;
-      })
       console.log(experience)
       try {
-        const res = await axios.post(
+        const res = await axios.put(
           "http://localhost:4000/updateProfile/doctor",
           {
+            doctorId:user.Id,
             userId: user.user.Id,
             experience: experience,
             licenceNumber:licenceNumber,
@@ -177,7 +178,7 @@ const Experience = () => {
     return false;
   }
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div style={{ minHeight: "65vh" }}>
       {user && (
         <Grid container sx={{ mt: 15 }}>
           <Grid item xs={12}>

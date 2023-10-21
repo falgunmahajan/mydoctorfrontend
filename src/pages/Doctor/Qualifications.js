@@ -104,7 +104,7 @@ user.Qualification && setQualification(user.Qualification)
         return item;
       });
       try {
-        const res = await axios.post(
+        const res = await axios.put(
           "http://localhost:4000/updateProfile/doctor",
           {
             userId: user.user.Id,

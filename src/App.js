@@ -21,6 +21,7 @@ import DoctorProfile from "./pages/Doctor/DoctorProfile";
 import Qualifications from "./pages/Doctor/Qualifications";
 import Experience from "./pages/Doctor/Experience";
 import Appointments from "./pages/Doctor/Appointments";
+import Professional from "./pages/Doctor/Professional";
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;
@@ -58,6 +59,7 @@ console.log("hello")
       <Route path="/qualifications" element={<Qualifications/>}/>
       <Route path="/Experience" element={<Experience/>}/>
       <Route path="/doctorappointments" element={<Appointments/>}/>
+      <Route path="/professionalinformation" element={<Professional/>}/>
         </Route>
         <Route path="/otpverification" element={<OtpVerification/>}/>
         <Route path="/auth" element={<TabPage />}>

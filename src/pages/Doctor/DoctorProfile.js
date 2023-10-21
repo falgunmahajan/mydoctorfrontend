@@ -16,7 +16,7 @@ import axios from "axios";
 const DoctorProfile = () => {
   const [edit, setEdit] = useState(false);
   const [img, setImg] = useState("/broken-image.jpg");
-  const [imgFile, setImgFile] = useState([]);
+  const [imgFile, setImgFile] = useState();
   const [languageField, setLanguageField] = useState([]);
   const [bio, setBio] = useState("self");
   const [success, setSuccess] = useState(false);
@@ -37,15 +37,18 @@ const DoctorProfile = () => {
       setEdit(true);
     }
     else {
-      
+      console.log(imgFile)
       try {
         const formData=new FormData();
         formData.append("userId",user.user.Id)
         formData.append("languages",JSON.stringify(languageField))
         formData.append("bio",bio)
-        formData.append("image",imgFile)
+        if(imgFile){
+        
+          formData.append("image",imgFile)
+        }
         console.log(Object.fromEntries(formData.entries()))
-        const res = await axios.post(
+        const res = await axios.put(
           "http://localhost:4000/updateProfile/doctor",formData);
        
         setError(false);
@@ -76,7 +79,7 @@ const DoctorProfile = () => {
   };
 
   return (
-    <div style={{minHeight:"80vh"}}>
+    <div style={{minHeight:"75vh"}}>
       {user && (
         <Grid container sx={{ mt: 10 }}>
           <Grid item xs={12}>
@@ -175,7 +178,7 @@ const DoctorProfile = () => {
               value={languageField}
               onChange={(event, value) =>setLanguageField(value.map(lang=>({name:lang.name,code:lang.code}))) }
               getOptionLabel={(option) => option.name}
-              filterSelectedOptions
+              // filterSelectedOptions
               renderInput={(params) => (
                 <TextField {...params} label="Languages" />
               )}

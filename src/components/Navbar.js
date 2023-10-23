@@ -122,20 +122,24 @@ console.log("navbar")
               xs={12}
               lg={4}
               order={{ xs: 4, lg: 3 }}
-              sx={{ backgroundColor: "#fafafa", display: "flex" }}
+              sx={{ backgroundColor: "#fafafa", display: "flex", justifyContent:"space-around" , alignItems:"center"}}
             >
-               {/* <Autocomplete
-              
-              id="combo-box-demo"
+               <Autocomplete
+              freeSolo
+              id="tags-outlined"
               options={specialities}
               // value={item.hospital}
               getOptionLabel={(option) => option.name}
+              sx={{width:250, border:"none"}}
             //   filterSelectedOptions
               renderInput={(params) => (
-                <TextField fullWidth  variant="standard" {...params} placeholder="Select a Service"/>
+                <TextField   {...params} placeholder="Select a Service" variant="standard" InputProps={{
+                  ...params.InputProps,
+                  disableUnderline: true,
+                }}/>
               )}
-            /> */}
-              <Box>
+            />
+              {/* <Box>
                 <TextField
                   variant="standard"
                   placeholder="Select a Service"
@@ -165,7 +169,7 @@ console.log("navbar")
                     })}
                   </Box>
                 )}
-              </Box>
+              </Box> */}
               <TextField
                 variant="standard"
                 placeholder="Search Doctors"

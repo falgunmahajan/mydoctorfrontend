@@ -22,6 +22,7 @@ import Qualifications from "./pages/Doctor/Qualifications";
 import Experience from "./pages/Doctor/Experience";
 import Appointments from "./pages/Doctor/Appointments";
 import Professional from "./pages/Doctor/Professional";
+
 const drawerWidth = 240;
 function App(props) {
   const { window } = props;

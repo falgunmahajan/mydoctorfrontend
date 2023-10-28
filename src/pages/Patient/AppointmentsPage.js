@@ -45,7 +45,7 @@ const AppointmentsPage = () => {
     <Grid container sx={{border:1, borderColor:"divider", backgroundColor:"white", p:2, mt:4}}>
     <Grid item xs={3} sx={{display:"flex", alignItems:"center"}}>
     <Avatar src="/broken-image.jpg"  sx={{ width: 100, height: 100, mr:3 }}/>
-    <Typography sx={{fontSize:"20px"}}>Falgun Mahajan</Typography>
+    <Typography sx={{fontSize:"20px"}}>Doctor</Typography>
     </Grid>
     <Grid item xs={3} sx={{my:"auto", py:1}}>
         <Box sx={{display:"flex"}}><Typography sx={{color:"#3f51b5",mr:0.5}}>Date:</Typography><Typography>03 Aug 2023</Typography></Box>

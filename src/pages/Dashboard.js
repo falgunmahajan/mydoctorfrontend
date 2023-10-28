@@ -147,62 +147,62 @@ export default function Dashboard() {
               <Grid item key={index} xs={12} lg={4} sx={{ mt: 3 }}>
                 <Card
                   sx={{
-                    width: 420,
-                    height: 430,
+                    width: 360,
+                    height:300,
                     border: 1,
                     borderColor: "divider",
                     p: 2,
-                    pr: 10,
+                    pr:6
                   }}
                 >
                   <CardContent sx={{ display: "flex",height:"100%" }}>
                     <Avatar
                       src="/broken-image.jpg"
-                      sx={{ width: 100, height: 100, mr: 3 }}
+                      sx={{ width: 80, height: 80, mr: 3 }}
                     />
                     <Box sx={{height:"100%"  }}>
-                      <Box  sx={{ height:"88%"  }}>
-                        <Typography sx={{ fontSize: 20, fontWeight: "bold" }}>
+                      <Box  sx={{ height:"85%"  }}>
+                        <Typography sx={{ fontWeight: "bold" }}>
                           {getName(doctor.user.firstName, doctor.user.lastName)}
                         </Typography>
-                        <Typography sx={{ mt: 2 }}>
+                        <Typography sx={{fontSize:13, mt: 1 }}>
                           {getQualification(doctor.Qualification)}
                         </Typography>
-                        <Typography>
+                        <Typography sx={{fontSize:13}}>
                           {getSpecialities(doctor.specialities)}
                         </Typography>
                         <Grid container>
-                          <Grid item xs={6} sx={{ mt: 3 }}>
-                            <Typography sx={{ fontWeight: "bold" }}>
+                          <Grid item xs={6} sx={{ mt: 2 }}>
+                            <Typography sx={{ fontSize:13,fontWeight: "bold" }}>
                               Hospital
                             </Typography>
                           </Grid>
-                          <Grid item xs={6} sx={{ mt: 3 }}>
-                            <Typography>
+                          <Grid item xs={6} sx={{ mt: 2 }}>
+                            <Typography sx={{fontSize:13}}>
                               {doctor.hospitals
                                 ? getHospitals(doctor.hospitals)
                                 : "Not Available"}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sx={{ mt: 1 }}>
-                            <Typography sx={{ fontWeight: "bold" }}>
+                            <Typography sx={{fontSize:13, fontWeight: "bold" }}>
                               Languages
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sx={{ mt: 1 }}>
-                            <Typography>
+                            <Typography sx={{fontSize:13}}>
                               {doctor.languages
                                 ? getLanguages(doctor.languages)
                                 : "Not Available"}
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sx={{ mt: 2 }}>
-                            <Typography sx={{ fontWeight: "bold" }}>
+                            <Typography sx={{fontSize:13, fontWeight: "bold" }}>
                               Next Available
                             </Typography>
                           </Grid>
                           <Grid item xs={6} sx={{ mt: 2 }}>
-                            <Typography>Not Available</Typography>
+                            <Typography sx={{fontSize:13}}>Not Available</Typography>
                           </Grid>
                         </Grid>
                       </Box>

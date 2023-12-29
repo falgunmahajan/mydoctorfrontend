@@ -56,10 +56,9 @@ export default function Sidebar(props: Props) {
 
   const drawer = (
     <div>
-      <Toolbar />
-      <Toolbar />
-      <Toolbar sx={{ display: { xs: "block", md: "none" } }} />
-      <Toolbar sx={{ display: { xs: "block", md: "none" } }} />
+      
+      <Toolbar sx={{ display: { xs: "none", md: "block" } }} />
+      <Toolbar sx={{ display: { xs: "none", md: "block" } }} />
       {(!user || user.user.role !== "doctor") && (
         <>
           <List>
@@ -392,7 +391,7 @@ export default function Sidebar(props: Props) {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)` } }}
+        sx={{ flexGrow: 1, p: 3,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)`, minHeight:"100vh" } }}
       >
         <Toolbar />
         <Toolbar />

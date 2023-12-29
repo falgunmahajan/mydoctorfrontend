@@ -7,3 +7,7 @@ export async function getSpecialities() {
    return res.data.data;
    
   }
+  export interface SpecialitiesTypes{
+    name:string,
+    imageUrl:string
+  }

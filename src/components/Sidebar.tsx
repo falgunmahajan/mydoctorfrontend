@@ -32,13 +32,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
   }));
-  const currenturl = window.location.pathname;
-  console.log(currenturl);
+ 
 export default function Sidebar(props: Props) {
     const theme=useTheme()
-  const { window,mobileOpen,handleDrawerToggle } = props;
+    
+   
+  const {mobileOpen,handleDrawerToggle } = props;
+  console.log(window)
   const navigate = useNavigate();
-  const [url, setUrl] = React.useState(currenturl);
+  const [url, setUrl] = React.useState(window.location.pathname);
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
   const [open, setOpen] = React.useState(
@@ -49,6 +51,9 @@ export default function Sidebar(props: Props) {
       url === "/experience"||
       url==="/professionalinformation"
   );
+  React.useEffect(()=>{
+    setUrl(window.location.pathname)
+   })
 
   const handleClick = () => {
     setOpen(true);
@@ -76,7 +81,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <Person />
                 </ListItemIcon>
-                <ListItemText primary="Doctors" />
+                <ListItemText primary="Doctors"  primaryTypographyProps={{fontSize: '15px'}} />
               </ListItemButton>
             </ListItem>
           </List>
@@ -98,7 +103,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <BubbleChart />
                 </ListItemIcon>
-                <ListItemText primary="Specialities" />
+                <ListItemText primary="Specialities" primaryTypographyProps={{fontSize: '15px'}} />
               </ListItemButton>
             </ListItem>
           </List>
@@ -124,7 +129,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <EventNote />
                 </ListItemIcon>
-                <ListItemText primary="My Appointments" />
+                <ListItemText primary="My Appointments"  primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
           </List>
@@ -141,7 +146,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <Person />
                 </ListItemIcon>
-                <ListItemText primary="Account Settings" />
+                <ListItemText primary="Account Settings" primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -161,7 +166,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <AccountCircle />
                   </ListItemIcon>
-                  <ListItemText primary="My Profile" />
+                  <ListItemText primary="My Profile" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
                 <ListItemButton
                   disableGutters
@@ -178,7 +183,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <Lock />
                   </ListItemIcon>
-                  <ListItemText primary="Change Password" />
+                  <ListItemText primary="Change Password" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -205,7 +210,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <PersonOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Dashboard" />
+                <ListItemText primary="Dashboard" primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
           </List>
@@ -222,7 +227,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <PersonOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Doctor Profile" />
+                <ListItemText primary="Doctor Profile" primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -242,7 +247,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <AccountCircle />
                   </ListItemIcon>
-                  <ListItemText primary="Personal Information" />
+                  <ListItemText primary="Personal Information" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
                 <ListItemButton
                   disableGutters
@@ -259,7 +264,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <AccountCircle />
                   </ListItemIcon>
-                  <ListItemText primary="Professional Information" />
+                  <ListItemText primary="Professional Information" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
                 <ListItemButton
                   disableGutters
@@ -276,7 +281,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <Lock />
                   </ListItemIcon>
-                  <ListItemText primary="Qualifications" />
+                  <ListItemText primary="Qualifications" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
                 <ListItemButton
                   disableGutters
@@ -293,7 +298,7 @@ export default function Sidebar(props: Props) {
                   <ListItemIcon>
                     <Lock />
                   </ListItemIcon>
-                  <ListItemText primary="Experience" />
+                  <ListItemText primary="Experience" primaryTypographyProps={{fontSize: '15px'}}/>
                 </ListItemButton>
               </List>
             </Collapse>
@@ -316,7 +321,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <PersonOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Appointments" />
+                <ListItemText primary="Appointments" primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
           </List>
@@ -335,7 +340,7 @@ export default function Sidebar(props: Props) {
                 <ListItemIcon>
                   <PersonOutlined />
                 </ListItemIcon>
-                <ListItemText primary="Reviews" />
+                <ListItemText primary="Reviews" primaryTypographyProps={{fontSize: '15px'}}/>
               </ListItemButton>
             </ListItem>
           </List>
@@ -345,7 +350,7 @@ export default function Sidebar(props: Props) {
   );
 
   // Remove this const when copying and pasting into your project.
-  const container = window !== undefined ? () => window().document.body : undefined;
+  // const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -357,7 +362,7 @@ export default function Sidebar(props: Props) {
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
+          // container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}

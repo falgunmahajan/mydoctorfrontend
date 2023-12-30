@@ -43,28 +43,29 @@ export default function Navbar(props: Props) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event:React.MouseEvent<HTMLButtonElement>) => {
-    console.log("some")
+    console.log("anchorEl", anchorEl);
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
- console.log(anchorEl)
-  const open = Boolean(anchorEl);
+  console.log(anchorEl)
+  // const open = Boolean(anchorEl);
+  const open = !anchorEl ? false : true;
   const id = open ? 'simple-popover' : undefined;
   const [specialities, setSpecialities] = React.useState([] as Specialities[]);
   const login=useAppSelector(state=>state.Login)
-const status=useAppSelector(state=>state.status)
+  const status=useAppSelector(state=>state.status)
   const dispatch=useAppDispatch()
   React.useEffect(() => {
-    console.log("hello");
+    // console.log("hello");
     if (status == "idle") {
-      console.log("status")
+      // console.log("status")
       dispatch(fetchUser());
     }
   });
-console.log("navbar")
+// console.log("navbar")
 async function getSpecialitiesdata(){
     const speciality = await getSpecialities();
     setSpecialities(speciality);
@@ -177,6 +178,7 @@ async function getSpecialitiesdata(){
           <ListItem disableGutters disablePadding >
             <ListItemButton onClick={()=>{
               localStorage.removeItem("user")
+              handleClose();
             dispatch(fetchUser())
             navigate("/")
               }} >

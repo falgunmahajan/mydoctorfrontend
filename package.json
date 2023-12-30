@@ -8,6 +8,7 @@
     "@mui/icons-material": "^5.15.2",
     "@mui/lab": "^5.0.0-alpha.158",
     "@mui/material": "^5.15.2",
+    "@mui/x-date-pickers": "^6.18.6",
     "@reduxjs/toolkit": "^2.0.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -18,6 +19,7 @@
     "@types/react-dom": "^18.2.18",
     "@types/react-redux": "^7.1.33",
     "axios": "^1.6.3",
+    "dayjs": "^1.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.0.4",
@@ -34,12 +36,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "coverage":"react-scripts test --coverage --watchAll --collectCoverageFrom='src/**/**/*.{ts,tsx}'"
+    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom='src/**/**/*.{ts,tsx}'"
   },
   "jest": {
-    "transformIgnorePatterns": ["node_modules/(?!axios/)|(?!swiper).*/"]
+    "moduleNameMapper": {
+      "swiper/react": "swiper/react/swiper-react.js",
+      "swiper/css": "swiper/swiper.min.css"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!axios)/"
+    ]
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -57,5 +64,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.23.3"
   }
 }

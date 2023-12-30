@@ -1,11 +1,23 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
 interface User{
+    image?:string;
+    dob?:string;
+    BloodGroup?:string;
+    HouseNo?:string;
+    Colony?:string;
+    city?:string;
+    state?:string;
+    country?:string;
+    pincode?:string
     user:{
+        Id:string
         role:string,
-        name:string,
+        firstName?:string,
+        lastName?:string,
         email:string,
-        contact:string,
+        contactNumber:string,
+        gender?:string
     }
    
 }

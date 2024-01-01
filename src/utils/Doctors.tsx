@@ -44,9 +44,12 @@ export interface DoctorsTypes {
 }
 export interface language {
   name: string;
+  code:string
 }
 export interface degree {
   degree: string;
+  institute:string;
+  year:string
 }
 export interface speciality {
   name: string;

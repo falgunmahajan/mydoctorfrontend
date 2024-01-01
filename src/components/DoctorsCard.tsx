@@ -31,7 +31,7 @@ const DoctorsCard = ({
       <Box sx={{height:"100%"  }}>
         <Box  sx={{ height:"95%"  }}>
           <Typography sx={{ fontWeight: "bold" }}>
-            {getName(firstName,lastName)}
+            {`Dr. ${getName(firstName,lastName)}`}
           </Typography>
           <Typography sx={{fontSize:11, mt: 1, color:"grey" }}>
             {Qualification && getQualification(Qualification)}

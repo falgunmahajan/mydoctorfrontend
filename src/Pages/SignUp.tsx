@@ -63,9 +63,7 @@ const SignUp = ({role}:SignUpProps) => {
          else{
           first=user.name
          }
-         if(role=="doctor"){
-          first=`Dr. ${first}`
-         }
+        
           await axios.post(`http://localhost:4000/${role}`, {
           firstName:first ,
           lastName: last,

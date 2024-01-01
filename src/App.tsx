@@ -14,6 +14,9 @@ import Login from './Pages/Login';
 import SignUp from './Pages/SignUp';
 import OtpVerification from './Pages/OtpVerification';
 import ProfilePage from './Pages/Patient/ProfilePage';
+import ChangePassword from './Pages/Patient/ChangePassword';
+import DoctorProfile from './Pages/Doctor/DoctorProfile';
+import Qualifications from './Pages/Doctor/Qualifications';
 export const drawerWidth = 220;
 
 function App() {
@@ -32,6 +35,9 @@ function App() {
    
     <Route path ="/specialities" element={<SpecialitiesPage/>}/> 
     <Route path ="/myprofile" element={<ProfilePage/>}/> 
+    <Route path ="/changepassword" element={<ChangePassword/>}/> 
+    <Route path="/doctor-profile" element={<DoctorProfile/>}/>
+    <Route path="/qualifications" element={<Qualifications/>}/>
     </Route>
     <Route path="/auth" element={<TabPage />}>
           <Route path="login" element={<Login />} />

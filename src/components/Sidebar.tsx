@@ -46,7 +46,7 @@ export default function Sidebar(props: Props) {
   const [open, setOpen] = React.useState(
     url === "/myprofile" ||
       url === "/changepassword" ||
-      url === "/doctorprofile" ||
+      url === "/doctor-profile" ||
       url === "/qualifications" ||
       url === "/experience"||
       url==="/professionalinformation"
@@ -217,8 +217,8 @@ export default function Sidebar(props: Props) {
           <List>
             <ListItem
               onClick={() => {
-                navigate("/doctorprofile");
-                setUrl("/doctorprofile");
+                navigate("/doctor-profile");
+                setUrl("/doctor-profile");
                 handleClick();
               }}
               disablePadding
@@ -235,13 +235,13 @@ export default function Sidebar(props: Props) {
                 <ListItemButton
                   disableGutters
                   onClick={() => {
-                    navigate("/doctorprofile");
-                    setUrl("/doctorprofile");
+                    navigate("/doctor-profile");
+                    setUrl("/doctor-profile");
                   }}
                   sx={{
                     pl: 8,
                     backgroundColor:
-                      url === "/doctorprofile" ? "silver" : "transparent",
+                      url === "/doctor-profile" ? "silver" : "transparent",
                   }}
                 >
                   <ListItemIcon>

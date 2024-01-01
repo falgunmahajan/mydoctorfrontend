@@ -7,7 +7,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import React, { useEffect, useState } from 'react'
 import { useAppSelector } from '../../Redux/Store';
-import { getDate } from '../../utils/getDate';
+import { getDate } from '../../utils/getData';
 import axios from 'axios';
 
 const ProfilePage = () => {

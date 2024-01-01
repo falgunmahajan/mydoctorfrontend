@@ -149,7 +149,7 @@ async function getSpecialitiesdata(){
                 
                 <Avatar src="/broken-image.jpg"
                 component="button"
-                  sx={{ ml: "auto", border:"none" }}
+                  sx={{ ml: "auto", border:"none" , p:0 }}
                   onClick={handleClick}
                 />
                 <Popover

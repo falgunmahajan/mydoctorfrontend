@@ -52,8 +52,21 @@ export interface degree {
   year:string
 }
 export interface speciality {
+  Id:string,
   name: string;
 }
 export interface hospital {
+  Id:string,
   hospitalName: string;
+  hospitalDoctorMapping:hospitalDoctor
+}
+export interface ExperienceInterface{
+  position:string,
+  hospitalName: string,
+  startDate:string,
+  endDate:string
+}
+export interface hospitalDoctor{
+  position:string,
+  consultationFee:string
 }

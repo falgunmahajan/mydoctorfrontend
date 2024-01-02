@@ -56,7 +56,7 @@ const Dashboard = () => {
           <Grid container spacing={2} sx={{ pl: 3 }}>
             {specialities.slice(0, 8).map((item, index) => {
               return (
-                <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ mt: 3 }}>
+                <Grid item key={index} xs={12} sm={6} md={4} lg={3} sx={{ mb: 2 }}>
                   <SpecialitiesCard
                     speciality={item.name}
                     imageUrl={item.imageUrl}
@@ -91,7 +91,7 @@ const Dashboard = () => {
       )}
       <Typography
           component="div"
-          sx={{ mt: 3, mx: 3 }}
+          sx={{ mt: 2, mx: 3 }}
         >
           {doctors.length}+ Doctors
         </Typography>
@@ -100,7 +100,7 @@ const Dashboard = () => {
           
           doctors.slice(start, end).map((doctor, index) => {
             return (
-              <Grid item key={index} xs={12} sm={6} md={4}  xl={3} sx={{ mt: 3 }}>
+              <Grid item key={index} xs={12} sm={6} md={4}  xl={3} sx={{ mb: 2 }}>
                <DoctorsCard
                 firstName={doctor.user.firstName}
                 lastName={doctor.user.lastName}

@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from "axios"
-import { degree, language } from "../utils/Doctors";
+import {  ExperienceInterface, degree, hospital, language, speciality } from "../utils/Doctors";
 interface User{
+    Id:string;
     image?:string;
     dob?:string;
     BloodGroup?:string;
@@ -12,7 +13,11 @@ interface User{
     country?:string;
     pincode?:string;
     languages?:Array<language>;
-    Qualification?:Array<degree>
+    Qualification?:Array<degree>;
+    specialities?:Array<speciality>
+    licenceNumber ?:string;
+    experience?:Array<ExperienceInterface>
+    hospitals?:Array<hospital>
     bio?:string;
     user:{
         Id:string

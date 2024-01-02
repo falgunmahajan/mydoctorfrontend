@@ -24,18 +24,18 @@ const Qualifications = () => {
   const [success, setSuccess] = useState<string | boolean>(false);
   const [error, setError] = useState<string | boolean>(false);
   const status = useAppSelector((state) => state.status);
-  const [qualification, setQualification] = useState([] as QualificationType[]);
+  const [qualification, setQualification] = useState<null|QualificationType[]>(null);
   useEffect(() => {
     setQualificationData();
   }, [status]);
   const setQualificationData = () => {
-    user?.Qualification
+    user?.Qualification?.length
       ? setQualification(user.Qualification)
-      : setQualification([]);
+      : setQualification(null);
   };
   const disabledSubmit = () => {
     let disabled = false;
-    qualification.map((item) => {
+    qualification?.map((item) => {
       if (
         !item.degree ||
         !item.institute ||
@@ -54,7 +54,7 @@ const Qualifications = () => {
     index: number
   ) => {
     console.log(index);
-    console.log(qualification[index]);
+    // console.log(qualification[index]);
     console.log(qualification);
     let err = "";
     if (e.target.value.length < 3 || !/^[a-zA-Z]*$/.test(e.target.value)) {
@@ -62,12 +62,15 @@ const Qualifications = () => {
     } else {
       err = "";
     }
-    const itemData = { ...qualification[index], degreeErr: err };
-    setQualification([
-      ...qualification.slice(0, index),
-      itemData,
-      ...qualification.slice(index + 1),
-    ]);
+    if(qualification){
+      const itemData = { ...qualification[index], degreeErr: err };
+      setQualification([
+        ...qualification.slice(0, index),
+        itemData,
+        ...qualification.slice(index + 1),
+      ]);
+    }
+   
   };
   const isValidInstitute = (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
@@ -79,12 +82,15 @@ const Qualifications = () => {
     } else {
       err = "";
     }
-    const itemData = { ...qualification[index], instituteErr: err };
-    setQualification([
-      ...qualification.slice(0, index),
-      itemData,
-      ...qualification.slice(index + 1),
-    ]);
+    if(qualification){
+      const itemData = { ...qualification[index], instituteErr: err };
+      setQualification([
+        ...qualification.slice(0, index),
+        itemData,
+        ...qualification.slice(index + 1),
+      ]);
+    }
+  
   };
   const isValidYear = (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
@@ -100,25 +106,39 @@ const Qualifications = () => {
     } else {
       err = "";
     }
-    const itemData = { ...qualification[index], yearErr: err };
-    setQualification([
-      ...qualification.slice(0, index),
-      itemData,
-      ...qualification.slice(index + 1),
-    ]);
+    if(qualification){
+      const itemData = { ...qualification[index], yearErr: err };
+      setQualification([
+        ...qualification.slice(0, index),
+        itemData,
+        ...qualification.slice(index + 1),
+      ]);
+    }
+  
   };
   const handleSubmit = async () => {
     if (!edit) {
       setEdit(true);
+      if(!qualification){
+        setQualification([{ degree:"",
+        institute: "",
+        year: "",
+        degreeErr: "",
+        instituteErr:"",
+        yearErr: ""}])
+      }
+    
     } else {
       console.log(qualification);
-      qualification.map((item) => {
+      qualification?.map((item) => {
         delete item.degreeErr;
         delete item.instituteErr;
         delete item.yearErr;
         return item;
       });
+      
       try {
+      
         const res = await axios.put(
           "http://localhost:4000/updateProfile/doctor",
           {
@@ -175,7 +195,14 @@ const Qualifications = () => {
             </Button>
           </Grid>
 
-          {qualification.map((item, index) => {
+          {!qualification?
+          <Grid item xs={12}>
+            <Typography sx={{color:"grey", textAlign:"center", fontSize:18}}>
+            No Qualification added
+            </Typography>
+           
+          </Grid>
+          :qualification.map((item, index) => {
             return (
               <Grid
                 item
@@ -276,7 +303,7 @@ const Qualifications = () => {
                   >
                     <Close sx={{ color: "grey" }} />
                   </IconButton>
-                  {/* <Close component="button" onClick={()=> setQualification(qualification.splice(index, 1))}  sx={{color:"grey",border:"none", backgroundColor:"white"}}/> */}
+              
                 </Grid>
               </Grid>
             );
@@ -294,19 +321,22 @@ const Qualifications = () => {
             <Button
               variant="contained"
               sx={{ backgroundColor: "#3f51b5" }}
-              // startIcon={<Add />}
+
               onClick={() => {
-                setQualification([
-                  ...qualification,
-                  {
-                    degree: "",
-                    institute: "",
-                    year: "",
-                    degreeErr: "",
-                    instituteErr: "",
-                    yearErr: "",
-                  },
-                ]);
+                if(qualification){
+                  setQualification([
+                    ...qualification,
+                    {
+                      degree: "",
+                      institute: "",
+                      year: "",
+                      degreeErr: "",
+                      instituteErr: "",
+                      yearErr: "",
+                    },
+                  ]);
+                }
+               
               }}
             >
               Add More

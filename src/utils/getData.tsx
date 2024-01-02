@@ -8,10 +8,13 @@ export function getDate(value:Date|string)
  return   `${year}-${month}-${day}`
 
 }
-export function getDateWithoutDate(value:string)
+export function getDateWithoutDate(value:string|Date)
 {
+  console.log(typeof value)
    const date= new Date(value);
+   console.log(date)
    const year = date.getFullYear();
+   console.log(year)
    const month=(`0${date.getMonth()+1}`).slice(-2);
  console.log(month)
  return   `${year}-${month}`

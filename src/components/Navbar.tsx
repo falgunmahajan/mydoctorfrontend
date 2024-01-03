@@ -55,6 +55,7 @@ export default function Navbar(props: Props) {
   const open = !anchorEl ? false : true;
   const id = open ? 'simple-popover' : undefined;
   const [specialities, setSpecialities] = React.useState([] as Specialities[]);
+ 
   const login=useAppSelector(state=>state.Login)
   const status=useAppSelector(state=>state.status)
   const dispatch=useAppDispatch()
@@ -158,13 +159,17 @@ async function getSpecialitiesdata(){
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                  vertical: 'center',
+                  vertical: 'top',
                   horizontal: 'left',
                 }}
+                sx={{mt:1}}
               >
                 <List disablePadding >
                 <ListItem disableGutters disablePadding >
-            <ListItemButton >
+            <ListItemButton   onClick={() => {
+                    navigate("/doctor-profile");
+                    handleClose();
+                  }} >
                   <PersonOutlined sx={{mr:1}}/>
               <ListItemText primary="Account Settings"/>
             </ListItemButton>

@@ -16,17 +16,16 @@ const DoctorsCard = ({
     <Card
     sx={{
       width:  {xs:300,xl:350},
-      height:350,
+      height:380,
       border: 1,
       borderColor: "divider",
       p: 1,
-      pr:2
     }}
   >
     <CardContent sx={{ display: "flex",height:"100%" }}>
       <Avatar
         src="/broken-image.jpg"
-        sx={{ width: 80, height: 80, mr: 3 }}
+        sx={{ width: 70, height: 70, mr: 2 }}
       />
       <Box sx={{height:"100%"  }}>
         <Box  sx={{ height:"95%"  }}>

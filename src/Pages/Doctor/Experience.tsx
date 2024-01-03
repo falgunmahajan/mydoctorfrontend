@@ -171,40 +171,49 @@ const Experience = () => {
     }
     return disabled;
   };
-  const isValidStartDate = (start: string, end: string, index: number) => {
+  const setStartDate = (start: string, end: string, index: number) => {
     console.log(start,end)
-    let err = "";
+    let starterr="";
+    let enderr = "";
     if (!isValidDate(start, end)) {
-      err = "Start Date must be less than end Date";
-      console.log(err);
+      starterr = "Start Date must be less than end Date";
+      enderr="End Date must be greater than start Date"
+     
     } else {
-      err = "";
+      starterr = "";
+      enderr=""
     }
     if (experience) {
-        console.log(err)
-      const itemData = { ...experience[index], startErr: err };
+      const itemData = { ...experience[index], startErr: starterr, endErr:enderr, startDate: getDateWithoutDate(start), };
       console.log(itemData)
       setExperience([
         ...experience.slice(0, index),
         itemData,
         ...experience.slice(index + 1),
       ]);
+      
     }
-    console.log(experience)
+    
   };
-  const isValidEndDate = (start: string, end: string, index: number) => {
-    let err = "";
+  const setEndDate = (start: string, end: string, index: number) => {
+    let starterr="";
+    let enderr = "";
     if (!isValidDate(start, end)) {
-      err = "End Date must be greater than start Date";
+      starterr = "Start Date must be less than end Date";
+      enderr="End Date must be greater than start Date"
+     
     } else {
-      err = "";
+      starterr = "";
+      enderr=""
     }
     if (experience) {
-      const itemData = { ...experience[index], endErr: err };
+      const itemData = { ...experience[index], startErr: starterr, endErr:enderr,  endDate: getDateWithoutDate(end)};
       setExperience([
         ...experience.slice(0, index),
         itemData,
         ...experience.slice(index + 1),
+    
+      
       ]);
     }
   };
@@ -417,38 +426,31 @@ const Experience = () => {
                       }}
                     >
                       <Grid item xs={8} sx={{ p: 2, mb: 3 }}>
-                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <LocalizationProvider  dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="Start Date"
-                          
+                          disableFuture
                             views={["month","year" ]}
                             value={dayjs(new Date(item.startDate))}
                             disabled={!edit}
                             slotProps={{
                               textField: {
                                 helperText: item.startErr,
+                                error:Boolean(item.startErr)
+                           
+                              
                               },
                             }}
+                           
                             onChange={(value) => {
                               console.log(value);
                               if(value){
-                              isValidStartDate(
+                              setStartDate(
                                 value.format('YYYY/MM/DD'),
                                 item.endDate,
                                 index
                               );
-                              
-                                const itemData = {
-                                    ...item,
-                                    startDate: getDateWithoutDate(
-                                      value.format('YYYY/MM/DD')
-                                    ),
-                                  };
-                                  setExperience([
-                                    ...experience.slice(0, index),
-                                    itemData,
-                                    ...experience.slice(index + 1),
-                                  ]);
+                            
                               }
                            
                             }}
@@ -459,27 +461,26 @@ const Experience = () => {
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="End Date"
+                            disableFuture
                             views={[ "month","year"]}
                             value={dayjs(new Date(item.endDate))}
+                            disabled={!edit}
+                            slotProps={{
+                              textField: {
+                                helperText: item.endErr,
+                                error:Boolean(item.startErr)
+                              },
+                            }}
+                            
                             onChange={(value) => {
                                 console.log(value);
                                 if(value){
-                                    isValidEndDate(
+                                    setEndDate(
                                         item.startDate,
                                         value.format('YYYY/MM/DD'),
                                         index
                                       );
-                                      const itemData = {
-                                        ...item,
-                                        endDate: getDateWithoutDate(
-                                            value.format('YYYY/MM/DD')
-                                        ),
-                                      };
-                                      setExperience([
-                                        ...experience.slice(0, index),
-                                        itemData,
-                                        ...experience.slice(index + 1),
-                                      ]);
+                                     
                                 }
                             
                             }}

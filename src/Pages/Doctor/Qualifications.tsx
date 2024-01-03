@@ -57,7 +57,7 @@ const Qualifications = () => {
     // console.log(qualification[index]);
     console.log(qualification);
     let err = "";
-    if (e.target.value.length < 3 || !/^[a-zA-Z]*$/.test(e.target.value)) {
+    if (e.target.value.length < 3 || !/^[a-zA-Z\s]*$/.test(e.target.value)) {
       err = "Please enter the valid degree";
     } else {
       err = "";

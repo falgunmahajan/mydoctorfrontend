@@ -195,8 +195,8 @@ export default function Sidebar(props: Props) {
           <List>
             <ListItem
               onClick={() => {
-                navigate("/doctordashboard");
-                setUrl("/doctordashboard");
+                navigate("/doctor-dashboard");
+                setUrl("/doctor-dashboard");
                 setOpen(false);
               }}
               disablePadding

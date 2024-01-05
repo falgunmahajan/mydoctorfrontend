@@ -23,21 +23,11 @@ import { Close } from "@mui/icons-material";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
+import { slotTypes } from "../../utils/Doctors";
+
 const DoctorDashboard = () => {
-  const calculateEndTime = (value: Dayjs) => {
-    let time = dayjs(value).add(30, "m").toDate();
-    console.log(time);
-    return time;
-  };
-  type slotTypes = {
-    Id: string;
-    deleted: boolean;
-    count: number;
-    doctorId: string;
-    size: number;
-    startTime: string;
-    endTime: string;
-  };
+
+ 
   type ValuePiece = Date | null;
 
   type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -61,47 +51,49 @@ const DoctorDashboard = () => {
   console.log(user);
   useEffect(() => {
     getSlots();
-  }, [user]);
+  }, [user,date]);
   const getSlots = async () => {
     try {
+        const dateStr = date?.toLocaleString();
+      let specifiedDate: String;
+      if (dateStr) {
+        specifiedDate = new Date(dateStr).toISOString();
+       
+      
       const id = user?.Id;
       console.log(id);
       const resp = await axios.get(
-        `http://localhost:4000/slots?doctorId=${id}`
+        `http://localhost:4000/slots?doctorId=${id}&date=${specifiedDate}`
       );
       console.log(resp.data);
+console.log(date)
+    
 
-      const dateStr = date?.toLocaleString();
-      let specifiedDate: Date;
-      if (dateStr) {
-        specifiedDate = new Date(dateStr);
-        console.log(specifiedDate.toISOString());
+      setSlots(resp.data);
       }
-
-      const filteredSlots = resp.data.filter((item: slotTypes) =>
-        item.startTime.startsWith(specifiedDate.toISOString().split("T")[0])
-      );
-
-      console.log(filteredSlots);
-      setSlots(filteredSlots);
     } catch (error) {}
   };
+  const isStartError=(value:string)=>{
+    if(validTime(value)){
+      setStartErr("");
+    }
+    else{
+      setStartErr("Past time selected.Please select a time in future");
+    }
+  }
   const validTime = (value: String) => {
     const startSplitTime = startTime.split(":");
-    console.log(Number(startSplitTime[0]), new Date().getHours());
+    console.log(Number(startSplitTime[0]),typeof new Date().getHours());
     if (Number(startSplitTime[0]) > new Date().getHours()) {
-      setStartErr("");
+      
+      return true;
     } else {
-      setStartErr("Past time selected.Please select a time in future");
+     
+      return false
     }
   };
 
-  // const disabled = () => {
-  //   if (!validTime(startTime) || !size) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
+ 
   const handleSubmit = () => {
     console.log(startTime);
     console.log(date);
@@ -143,6 +135,10 @@ const DoctorDashboard = () => {
 
     return `${hours}:${minutes} ${ampm}`;
   };
+  const deleteSlots=(id:string)=>{
+    const res=axios.delete(`http://localhost:4000/slots?slotsId=${id}`)
+    getSlots()
+  }
   return (
     <>
       <Grid container sx={{ backgroundColor: "white", p: 2 }}>
@@ -151,19 +147,19 @@ const DoctorDashboard = () => {
         </Grid>
         <Grid item xs={12} sx={{ borderTop: 1, borderColor: "divider" }}></Grid>
         <Grid item xs={12} md={5} lg={3} sx={{ mt: 2 }}>
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar disablePast sx={{ border: 1, height: 280 }} />
-          </LocalizationProvider> */}
+         
           <Calendar value={date} onChange={setDate} minDate={new Date()} />
         </Grid>
         <Grid item xs={12} md={5} lg={3} sx={{ ml: 2, mt: 2 }}>
           <TextField
+          error={Boolean(startErr)}
             type="time"
             label="Start Time"
             fullWidth
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
-            onBlur={(e) => validTime(e.target.value)}
+            onBlur={(e) => isStartError(e.target.value)}
+            helperText={startErr}
           />
           <TextField
             type="time"
@@ -173,38 +169,7 @@ const DoctorDashboard = () => {
             sx={{ mt: 2 }}
             disabled
           />
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimePicker
-              label="Start Time"
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                  helperText: startErr,
-                  error: Boolean(startErr),
-                },
-              }}
-              value={startTime}
-              onChange={(value) => {
-                if (value) {
-                  handleTime(value);
-                }
-              }}
-            />
-          </LocalizationProvider> */}
-
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <TimeField
-              label="End Time"
-              disabled
-              value={endTime}
-              slotProps={{
-                textField: {
-                  fullWidth: true,
-                },
-              }}
-              sx={{ mt: 2 }}
-            />
-          </LocalizationProvider> */}
+         
           <Autocomplete
             id="combo-box-demo"
             options={[1, 2, 3, 4, 5]}
@@ -222,7 +187,7 @@ const DoctorDashboard = () => {
             <Button
               variant="contained"
               sx={{ backgroundColor: "#3f51b5", px: 4 }}
-              // disabled={disabled()}
+              disabled={!validTime(startTime)}
               onClick={handleSubmit}
             >
               Create Slot
@@ -269,7 +234,7 @@ const DoctorDashboard = () => {
                     Slot size:{item.size} Booked:{item.count}
                   </Typography>
                 </Box>
-                <IconButton onClick={() => console.log(item.Id)}>
+                <IconButton onClick={() => deleteSlots(item.Id)}>
                   <Close />
                 </IconButton>
               </Box>

@@ -6,13 +6,17 @@ import { Box, Grid, Pagination, Typography } from "@mui/material";
 import { ClipLoader } from "react-spinners";
 import { Link} from "react-router-dom";
 import SpecialitiesCard from "../components/SpecialitiesCard";
-import { DoctorsTypes, getDoctors } from "../utils/Doctors";
+import { DoctorsTypes, getDoctors, slotTypes } from "../utils/Doctors";
 import DoctorsCard from "../components/DoctorsCard";
+import axios from "axios";
+import { useAppSelector } from "../Redux/Store";
 const Dashboard = () => {
   const [specialities, setSpecialities] = useState([] as SpecialitiesTypes[]);
   const [doctors, setDoctors] = useState([] as DoctorsTypes[]);
   const [loading, setLoading] = useState(true);
   const [page,setPage]=useState(1)
+  
+  const user = useAppSelector((state) => state.user);
   let start:number=0;
   let end:number=0;
   let count:number=0
@@ -27,17 +31,21 @@ const Dashboard = () => {
     setDoctors(doctors);
     
   }
+  
+  
  
   useEffect(() => {
     getSpecialitiesdata();
     getDoctorsdata()
     setLoading(false)
-  }, []);
+
+  }, [user]);
   if(doctors.length){
     count = Math.ceil(doctors.length/12);
    start = (12*page)-(12)
     end=(12*page)
 }
+
   return (
     <>
       <img src={dashboard} alt="image not found" />
@@ -102,6 +110,7 @@ const Dashboard = () => {
             return (
               <Grid item key={index} xs={12} sm={6} md={4}  xl={3} sx={{ mb: 2 }}>
                <DoctorsCard
+               Id={doctor.Id}
                 firstName={doctor.user.firstName}
                 lastName={doctor.user.lastName}
                 Qualification={doctor.Qualification}

@@ -1,7 +1,8 @@
 import { Avatar, Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
-import React from 'react'
-import { degree, getDoctorSpecialities, getHospitals, getLanguages, getName, getQualification, hospital, language, speciality } from '../utils/Doctors'
+import React, { useEffect, useState } from 'react'
+import { degree, getDoctorSpecialities, getHospitals, getLanguages, getName, getNextAvailableSlots, getQualification, hospital, language, speciality } from '../utils/Doctors'
 interface DoctorCardProps{
+  Id:string,
     firstName:string;
     lastName:string;
     Qualification:degree[];
@@ -10,8 +11,16 @@ interface DoctorCardProps{
     languages:language[]
 }
 const DoctorsCard = ({
-    firstName,lastName,Qualification,specialities,hospitals,languages
+  Id,  firstName,lastName,Qualification,specialities,hospitals,languages
 }:DoctorCardProps) => {
+  const[nextAvailable,setNextAvailable]=useState<string|null>()
+  useEffect(()=>{
+    setAvailableSlots()
+  })
+  const setAvailableSlots=async()=>{
+    const str=await getNextAvailableSlots(Id)
+    setNextAvailable(str)
+  }
   return (
     <Card
     sx={{
@@ -69,7 +78,7 @@ const DoctorsCard = ({
               </Typography>
             </Grid>
             <Grid item xs={6} sx={{ mt: 2 }}>
-              <Typography sx={{fontSize:11,color:"grey"}}>Not Available</Typography>
+              <Typography sx={{fontSize:11,color:nextAvailable==="Not available"?"grey":"green"}}>{nextAvailable}</Typography>
             </Grid>
           </Grid>
         </Box>

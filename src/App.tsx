@@ -20,6 +20,7 @@ import Qualifications from './Pages/Doctor/Qualifications';
 import Experience from './Pages/Doctor/Experience';
 import Professional from './Pages/Doctor/Professional';
 import DoctorDashboard from './Pages/Doctor/DoctorDashboard';
+import Search from './Pages/Search';
 export const drawerWidth = 220;
 
 function App() {
@@ -43,7 +44,8 @@ function App() {
     <Route path="/qualifications" element={<Qualifications/>}/>
     <Route path="/Experience" element={<Experience/>}/>
     <Route path="/professionalinformation" element={<Professional/>}/>
-    <Route path="//doctor-dashboard" element={<DoctorDashboard/>}/>
+    <Route path="/doctor-dashboard" element={<DoctorDashboard/>}/>
+    <Route path="/search" element={<Search/>}/>
     </Route>
     <Route path="/auth" element={<TabPage />}>
           <Route path="login" element={<Login />} />

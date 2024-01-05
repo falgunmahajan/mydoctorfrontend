@@ -1,10 +1,12 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 type SpecialityCardProps={
     imageUrl:string,
     speciality:string
 }
 const SpecialitiesCard = ({imageUrl,speciality}:SpecialityCardProps) => {
+  const navigate=useNavigate()
   return (
     <Card
       sx={{
@@ -13,6 +15,7 @@ const SpecialitiesCard = ({imageUrl,speciality}:SpecialityCardProps) => {
         border: 1,
         borderColor: "divider",
       }}
+      onClick={()=>navigate(`/search?sp=${speciality}`)}
     >
       <CardContent sx={{ textAlign: "center" }}>
         <img

@@ -1,11 +1,9 @@
-import {  Close,  } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 
 import {
   Alert,
   Autocomplete,
-
   Button,
-
   Grid,
   IconButton,
   TextField,
@@ -17,10 +15,14 @@ import React, { useEffect, useState } from "react";
 import { getDateWithoutDate } from "../../utils/getData";
 import { useAppSelector } from "../../Redux/Store";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { getSpecialities } from "../../utils/getSpecialities";
 import { ExperienceInterface, speciality } from "../../utils/Doctors";
-interface ExperienceType extends ExperienceInterface {
+interface ExperienceType {
+  position: string;
+  hospitalName: string;
+  startDate: Dayjs;
+  endDate: Dayjs;
   positionErr?: string;
   hospitalErr?: string;
   startErr?: string;
@@ -45,11 +47,19 @@ const Experience = () => {
     if (user) {
       user.specialities?.length && setSpecialities(user.specialities);
       user.licenceNumber && setLicenceNumber(user.licenceNumber);
-      setExperienceData()
+      setExperienceData();
     }
   }, [status]);
   const setExperienceData = () => {
-    user?.experience?.length ? setExperience(user.experience)
+    user?.experience?.length
+      ? setExperience(
+          user.experience.map((item) => ({
+            position: item.position,
+            hospitalName: item.hospitalName,
+            startDate: dayjs(`${item.fromYear}-${item.fromMonth}-1`),
+            endDate:dayjs(`${item.toYear}-${item.toMonth}-1`) ,
+          }))
+        )
       : setExperience(null);
   };
   async function getSpecialitiesdata() {
@@ -70,7 +80,7 @@ const Experience = () => {
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
     index: number
   ) => {
-    console.log(experience)
+    console.log(experience);
     let err = "";
     if (e.target.value.length < 3 || !/^[a-zA-Z]*$/.test(e.target.value)) {
       err = "Please enter the valid position";
@@ -113,8 +123,8 @@ const Experience = () => {
           {
             position: "",
             hospitalName: "",
-            startDate: getDateWithoutDate(new Date()),
-            endDate: getDateWithoutDate(new Date()),
+            startDate: dayjs(new Date()),
+            endDate: dayjs(new Date()),
             positionErr: "",
             hospitalErr: "",
             startErr: "",
@@ -127,16 +137,26 @@ const Experience = () => {
       experience?.map((item) => {
         delete item.positionErr;
         delete item.hospitalErr;
+        delete item.startErr;
+        delete item.endErr;
         return item;
       });
       console.log(experience);
+
       try {
         const res = await axios.put(
           "http://localhost:4000/updateProfile/doctor",
           {
             doctorId: user?.Id,
             userId: user?.user.Id,
-            experience: experience,
+            experience: experience?.map((item) => ({
+              position: item.position,
+              hospitalName: item.hospitalName,
+              fromYear: item.startDate.get("year"),
+              fromMonth: item.startDate.get("month")+1,
+              toYear: item.endDate.get("year"),
+              toMonth: item.endDate.get("month")+1,
+            })),
             licenceNumber: licenceNumber,
             specialities: specialities,
           }
@@ -156,8 +176,6 @@ const Experience = () => {
       if (
         !item.position ||
         !item.hospitalName ||
-        new Date(item.startDate).getFullYear() > new Date().getFullYear() ||
-        new Date(item.startDate).getFullYear() > new Date().getFullYear() ||
         item.positionErr ||
         item.hospitalErr ||
         item.startErr ||
@@ -171,58 +189,62 @@ const Experience = () => {
     }
     return disabled;
   };
-  const setStartDate = (start: string, end: string, index: number) => {
-    console.log(start,end)
-    let starterr="";
+  const setStartDate = (start: Dayjs, end: Dayjs, index: number) => {
+    console.log(start, end);
+    let starterr = "";
     let enderr = "";
     if (!isValidDate(start, end)) {
       starterr = "Start Date must be less than end Date";
-      enderr="End Date must be greater than start Date"
-     
+      enderr = "End Date must be greater than start Date";
     } else {
       starterr = "";
-      enderr=""
+      enderr = "";
     }
     if (experience) {
-      const itemData = { ...experience[index], startErr: starterr, endErr:enderr, startDate: getDateWithoutDate(start), };
-      console.log(itemData)
+      const itemData = {
+        ...experience[index],
+        startErr: starterr,
+        endErr: enderr,
+        startDate: start,
+      };
+      console.log(itemData);
       setExperience([
         ...experience.slice(0, index),
         itemData,
         ...experience.slice(index + 1),
       ]);
-      
     }
-    
   };
-  const setEndDate = (start: string, end: string, index: number) => {
-    let starterr="";
+  const setEndDate = (start: Dayjs, end: Dayjs, index: number) => {
+    let starterr = "";
     let enderr = "";
     if (!isValidDate(start, end)) {
       starterr = "Start Date must be less than end Date";
-      enderr="End Date must be greater than start Date"
-     
+      enderr = "End Date must be greater than start Date";
     } else {
       starterr = "";
-      enderr=""
+      enderr = "";
     }
     if (experience) {
-      const itemData = { ...experience[index], startErr: starterr, endErr:enderr,  endDate: getDateWithoutDate(end)};
+      const itemData = {
+        ...experience[index],
+        startErr: starterr,
+        endErr: enderr,
+        endDate: end,
+      };
       setExperience([
         ...experience.slice(0, index),
         itemData,
         ...experience.slice(index + 1),
-    
-      
       ]);
     }
   };
-  const isValidDate = (startDate: string, endDate: string) => {
-    console.log(startDate,endDate)
+  const isValidDate = (startDate: Dayjs, endDate: Dayjs) => {
+    console.log(startDate, endDate);
     console.log("hello");
-    const startYear = new Date(startDate).getFullYear();
-    const endYear = new Date(endDate).getFullYear();
-    console.log(startYear,endYear)
+    const startYear = startDate.get("year");
+    const endYear = endDate.get("year");
+    console.log(startYear, endYear);
     if (endYear >= startYear) {
       console.log("true");
       return true;
@@ -231,7 +253,7 @@ const Experience = () => {
     return false;
   };
   const handleClose = () => {
-    setExperienceData()
+    setExperienceData();
     setEdit(false);
   };
   return (
@@ -328,23 +350,21 @@ const Experience = () => {
             experience.map((item, index) => {
               return (
                 <>
-                <Grid item xs={12} sx={{textAlign:"right"}}>
-                <IconButton
-                    aria-label="delete"
-                    
-                    onClick={() => {
-                     console.log(experience)
-                      setExperience([
-                        ...experience.slice(0, index),
-                        ...experience.slice(index + 1),
-                      ]);
-                     
-                    }}
-                    disabled={!edit}
-                  >
-                    <Close sx={{ color: "grey"}} />
-                  </IconButton>
-                </Grid>
+                  <Grid item xs={12} sx={{ textAlign: "right" }}>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => {
+                        console.log(experience);
+                        setExperience([
+                          ...experience.slice(0, index),
+                          ...experience.slice(index + 1),
+                        ]);
+                      }}
+                      disabled={!edit}
+                    >
+                      <Close sx={{ color: "grey" }} />
+                    </IconButton>
+                  </Grid>
                   <Grid
                     item
                     xs={12}
@@ -352,10 +372,9 @@ const Experience = () => {
                       backgroundColor: "white",
                       border: 1,
                       borderColor: "divider",
-                  
+
                       display: "flex",
-                      justifyContent:"space-evenly",
-                    
+                      justifyContent: "space-evenly",
                     }}
                   >
                     <Grid
@@ -364,7 +383,6 @@ const Experience = () => {
                       sx={{
                         display: "flex",
                         flexDirection: "column",
-                       
                       }}
                     >
                       <Grid item xs={10} sx={{ p: 2 }}>
@@ -372,7 +390,6 @@ const Experience = () => {
                           id="outlined-basic"
                           label="Position"
                           variant="outlined"
-                        
                           onBlur={(e) => isValidPosition(e, index)}
                           helperText={item.positionErr}
                           error={Boolean(item.positionErr)}
@@ -392,7 +409,7 @@ const Experience = () => {
                           fullWidth
                         />
                       </Grid>
-                      <Grid item xs={10} sx={{ p: 2, }}>
+                      <Grid item xs={10} sx={{ p: 2 }}>
                         <TextField
                           id="outlined-basic"
                           label="Hospital"
@@ -426,33 +443,24 @@ const Experience = () => {
                       }}
                     >
                       <Grid item xs={8} sx={{ p: 2, mb: 3 }}>
-                        <LocalizationProvider  dateAdapter={AdapterDayjs}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
                           <DatePicker
                             label="Start Date"
-                          disableFuture
-                            views={["month","year" ]}
-                            value={dayjs(new Date(item.startDate))}
+                            disableFuture
+                            views={["year", "month"]}
+                            value={item.startDate}
                             disabled={!edit}
                             slotProps={{
                               textField: {
                                 helperText: item.startErr,
-                                error:Boolean(item.startErr)
-                           
-                              
+                                error: Boolean(item.startErr),
                               },
                             }}
-                           
                             onChange={(value) => {
                               console.log(value);
-                              if(value){
-                              setStartDate(
-                                value.format('YYYY/MM/DD'),
-                                item.endDate,
-                                index
-                              );
-                            
+                              if (value) {
+                                setStartDate(value, item.endDate, index);
                               }
-                           
                             }}
                           />
                         </LocalizationProvider>
@@ -462,27 +470,20 @@ const Experience = () => {
                           <DatePicker
                             label="End Date"
                             disableFuture
-                            views={[ "month","year"]}
-                            value={dayjs(new Date(item.endDate))}
+                            views={["year", "month"]}
+                            value={item.endDate}
                             disabled={!edit}
                             slotProps={{
                               textField: {
                                 helperText: item.endErr,
-                                error:Boolean(item.startErr)
+                                error: Boolean(item.startErr),
                               },
                             }}
-                            
                             onChange={(value) => {
-                                console.log(value);
-                                if(value){
-                                    setEndDate(
-                                        item.startDate,
-                                        value.format('YYYY/MM/DD'),
-                                        index
-                                      );
-                                     
-                                }
-                            
+                              console.log(value);
+                              if (value) {
+                                setEndDate(item.startDate, value, index);
+                              }
                             }}
                           />
                         </LocalizationProvider>
@@ -506,15 +507,16 @@ const Experience = () => {
               variant="contained"
               sx={{ backgroundColor: "#3f51b5" }}
               onClick={() => {
-                console.log(experience)
+                console.log(experience);
                 if (experience) {
                   setExperience([
                     ...experience,
                     {
                       position: "",
                       hospitalName: "",
-                      startDate: getDateWithoutDate(new Date()),
-                      endDate: getDateWithoutDate(new Date()),
+                      startDate: dayjs(new Date()),
+                      endDate: dayjs(new Date()),
+
                       positionErr: "",
                       hospitalErr: "",
                       startErr: "",
@@ -527,7 +529,6 @@ const Experience = () => {
               Add Row
             </Button>
           </Grid>
-        
         </Grid>
       )}
     </div>

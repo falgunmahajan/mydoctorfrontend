@@ -59,8 +59,8 @@ getDoctorsData()
    <>
 <Box sx={{display:"flex", justifyContent:"space-between"}}>
     <Box>
-    <Typography sx={{fontSize:18}}>Showing results for : '{speciality||name}'</Typography>
-    <Typography sx={{color:"grey"}}>{doctors.length} doctors found</Typography>
+    <Typography sx={{fontSize:18,mb:1}}>Showing results for : '{speciality||name}'</Typography>
+    <Typography sx={{color:"grey",mb:1}}>{doctors.length} doctors found</Typography>
     </Box>
     <Box sx={{width:100}}>
     <Typography sx={{fontSize:11,color:"grey"}}>

@@ -53,8 +53,19 @@ export default function Sidebar(props: Props) {
   );
   React.useEffect(()=>{
     setUrl(window.location.pathname)
+    if( url === "/myprofile" ||
+    url === "/changepassword" ||
+    url === "/doctor-profile" ||
+    url === "/qualifications" ||
+    url === "/experience"||
+    url==="/professionalinformation"){
+setOpen(true)
+    }
+    else{
+setOpen(false)
+    }
    })
-
+console.log(url,open)
   const handleClick = () => {
     setOpen(true);
   };
@@ -114,8 +125,8 @@ export default function Sidebar(props: Props) {
           <List>
             <ListItem
               onClick={() => {
-                navigate("/myappointments");
-                setUrl("/myappointments");
+                navigate("/appointments");
+                setUrl("/appointments");
                 setOpen(false);
               }}
               disablePadding
@@ -123,7 +134,7 @@ export default function Sidebar(props: Props) {
               <ListItemButton
                 sx={{
                   backgroundColor:
-                    url === "/myappointments" ? "silver" : "transparent",
+                    url === "/appointments" ? "silver" : "transparent",
                 }}
               >
                 <ListItemIcon>
@@ -306,8 +317,8 @@ export default function Sidebar(props: Props) {
           <List>
             <ListItem
               onClick={() => {
-                navigate("/doctorappointments");
-                setUrl("/doctorappointments");
+                navigate("/doctor-appointments");
+                setUrl("/doctor-appointments");
                 setOpen(false);
               }}
               disablePadding
@@ -315,7 +326,7 @@ export default function Sidebar(props: Props) {
               <ListItemButton
                 sx={{
                   backgroundColor:
-                    url === "/doctorappointments" ? "silver" : "transparent",
+                    url === "/doctor-appointments" ? "silver" : "transparent",
                 }}
               >
                 <ListItemIcon>
@@ -396,7 +407,7 @@ export default function Sidebar(props: Props) {
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)`, minHeight:"100vh" } }}
+        sx={{ flexGrow: 1, p: 3,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)`, minHeight:"88vh" } }}
       >
         <Toolbar />
         <Toolbar />

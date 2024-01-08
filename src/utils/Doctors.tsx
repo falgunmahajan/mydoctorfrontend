@@ -2,7 +2,15 @@ import axios from "axios";
 import moment from "moment";
 
 export async function getDoctors() {
-  const res = await axios.get("http://localhost:4000/doctors");
+  const res = await axios.get('http://localhost:4000/doctors');
+  return res.data;
+}
+export async function getDoctorById(id:string) {
+  const res = await axios.get(`http://localhost:4000/doctor/${id}`);
+  return res.data;
+}
+export async function getSlotsForDoctors(id:string) {
+  const res = await axios.get(`http://localhost:4000/slots?doctorId=${id}&start=${new Date().toISOString()}`);
   return res.data;
 }
 export const getName = (firstName: string, lastName: string) => {
@@ -58,13 +66,11 @@ return days[slotDate.getDay()]
     }
     export const getNextAvailableSlots=async(id:string)=>{
       try {
-        const resp = await axios.get(
-          `http://localhost:4000/slots?doctorId=${id}`
-        );
-        console.log(resp.data)
-        if(resp.data.length){
+        const resp =await getSlotsForDoctors(id)
+        console.log(resp)
+        if(resp.length){
           const doctorSlots:string[]=[]
-          resp.data.map((slot:slotTypes) =>{
+          resp.map((slot:slotTypes) =>{
             if(slot.size!==slot.count){
               doctorSlots.push(slot.startTime)
             }
@@ -85,12 +91,15 @@ return days[slotDate.getDay()]
    
 export interface DoctorsTypes {
   Id: string;
+  image:string,
+  bio:string
   languages: language[];
   Qualification: degree[];
   user: {
     firstName: string;
     lastName: string;
   };
+  experience:ExperienceInterface[]
   specialities: speciality[];
   hospitals: hospital[];
 }
@@ -115,8 +124,10 @@ export interface hospital {
 export interface ExperienceInterface{
   position:string,
   hospitalName: string,
-  startDate:string,
-  endDate:string
+ fromYear:string,
+ fromMonth:string,
+ toYear:string,
+ toMonth:string
 }
 export interface hospitalDoctor{
   position:string,

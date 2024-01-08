@@ -58,7 +58,7 @@ const Dashboard = () => {
             fontWeight="Bold"
             sx={{ mt: 3, mx: 3 }}
           >
-            {specialities.length}+ Specialities
+            {specialities.length >10? specialities.length-(specialities.length%10):specialities.length}+ Specialities
           </Typography>
 
           <Grid container spacing={2} sx={{ pl: 3 }}>
@@ -101,7 +101,7 @@ const Dashboard = () => {
           component="div"
           sx={{ mt: 2, mx: 3 }}
         >
-          {doctors.length}+ Doctors
+          {doctors.length>10? doctors.length-(doctors.length%10):doctors.length}+ Doctors
         </Typography>
        <Grid container spacing={2} sx={{ pl: 3 }}>
         {doctors.length ? (

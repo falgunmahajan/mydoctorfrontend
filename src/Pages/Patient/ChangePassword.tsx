@@ -51,7 +51,7 @@ const ChangePassword = () => {
     }
   }
   return (
-    <Grid container sx={{mt:5, minHeight:"62vh"}}>
+    <Grid container sx={{mt:5}}>
     <Grid item xs={4} sx={{ m: "auto" }}>
     {error && <Alert severity="error">{error}</Alert>}
     {success && <Alert severity="success">{success}</Alert>}

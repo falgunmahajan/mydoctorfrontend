@@ -81,20 +81,21 @@ const SpecialitiesPage = () => {
         sx={{ pl: 3, mb: 3, justifyContent: "space-between" }}
       >
         {speciality && (
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={8}>
             <Typography
               variant="h4"
               component="div"
               color="#3f51b5"
               fontWeight="Bold"
             >
-              {speciality.length}+ Specialities
+              {speciality.length>10 ? speciality.length-(speciality.length%10):speciality.length}+ Specialities
             </Typography>
           </Grid>
         )}
-        <Grid item xs={12} md={4} sx={{ display: "flex" }}>
+        <Grid item xs={12} md={3} sx={{ display: "flex" }}>
           <TextField
-            sx={{ mr: 1 }}
+          
+            // sx={{ mr: 1 }}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 searchSpeciality();

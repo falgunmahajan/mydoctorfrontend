@@ -1,6 +1,7 @@
 import { Avatar, Box, Button, Card, CardContent, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { degree, getDoctorSpecialities, getHospitals, getLanguages, getName, getNextAvailableSlots, getQualification, hospital, language, speciality } from '../utils/Doctors'
+import { useNavigate } from 'react-router-dom';
 interface DoctorCardProps{
   Id:string,
     firstName:string;
@@ -14,6 +15,7 @@ const DoctorsCard = ({
   Id,  firstName,lastName,Qualification,specialities,hospitals,languages
 }:DoctorCardProps) => {
   const[nextAvailable,setNextAvailable]=useState<string|null>()
+  const navigate=useNavigate();
   useEffect(()=>{
     setAvailableSlots()
   })
@@ -30,6 +32,7 @@ const DoctorsCard = ({
       borderColor: "divider",
       p: 1,
     }}
+    onClick={()=>navigate(`/doctor/${Id}`)}
   >
     <CardContent sx={{ display: "flex",height:"100%" }}>
       <Avatar

@@ -129,7 +129,7 @@ const ProfilePage = () => {
   return (
     <div>
         {user && 
-      <Grid container sx={{ mt: 15, minHeight: "65vh" }}>
+      <Grid container >
         <Grid item xs={12}>
           {error && <Alert severity="error">{error}</Alert>}
           {success && <Alert severity="success">{success}</Alert>}
@@ -166,7 +166,7 @@ const ProfilePage = () => {
             />
           </Box>
           {imgErr && <span style={{ color: "red" }}>{imgErr}</span>}
-          <Typography sx={{ fontSize: "12px", color: "grey", mt: 2 }}>
+          <Typography sx={{ fontSize: 11, color: "grey", mt: 2 }}>
             JPEG, JPG or PNG image less than 1 MB
             <br />
             (Close up face picture looks great)

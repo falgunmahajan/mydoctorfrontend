@@ -73,6 +73,7 @@ export default function Navbar(props: Props) {
 
   const login = useAppSelector((state) => state.Login);
   const status = useAppSelector((state) => state.status);
+  const user=useAppSelector((state)=>state.user)
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = React.useState("");
   const [searchSpeciality,setSearchSpeciality]=React.useState<string|null>()
@@ -84,6 +85,11 @@ export default function Navbar(props: Props) {
       dispatch(fetchUser());
     }
   });
+  React.useEffect(()=>{
+     if(window.location.pathname!=="/search"){
+setSearchValue("")
+     }
+  },[window.location.pathname])
   // console.log("navbar")
   async function getSpecialitiesdata() {
     const speciality = await getSpecialities();
@@ -179,7 +185,9 @@ export default function Navbar(props: Props) {
                 onChange={(e) => setSearchValue(e.target.value)}
                 onKeyUp={(e) => {
                   if (e.key === "Enter") {
+                    
                     navigate(`/search?q=${searchValue}`)
+                   
                   }
                 }}
                 sx={{ p: 1 }}
@@ -214,7 +222,12 @@ export default function Navbar(props: Props) {
                       <ListItem disableGutters disablePadding>
                         <ListItemButton
                           onClick={() => {
-                            navigate("/doctor-profile");
+                            if(user?.user.role==="patient"){
+                              navigate("myprofile")
+                            }
+                            if(user?.user.role==="doctor"){
+                              navigate("doctor-profile")
+                            }
                             handleClose();
                           }}
                         >
@@ -223,7 +236,15 @@ export default function Navbar(props: Props) {
                         </ListItemButton>
                       </ListItem>
                       <ListItem disableGutters disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={()=>{
+                          if(user?.user.role==="patient"){
+                            navigate("appointments")
+                          }
+                          if(user?.user.role==="doctor"){
+                            navigate("doctor-appointments")
+                          }
+                          handleClose();
+                        }}>
                           <CalendarToday sx={{ mr: 1 }} />
                           <ListItemText primary="My Appointments" />
                         </ListItemButton>

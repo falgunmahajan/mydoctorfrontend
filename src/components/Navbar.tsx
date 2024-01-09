@@ -101,6 +101,7 @@ setSearchValue("")
       <CssBaseline />
       <AppBar
         component="nav"
+       
         sx={{
           backgroundColor: "white",
           pt: 1,

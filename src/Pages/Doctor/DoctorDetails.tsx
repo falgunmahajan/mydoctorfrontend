@@ -5,7 +5,7 @@ import {
   getSlotsForDoctors,
   slotTypes,
 } from "../../utils/Doctors";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Accordion,
   AccordionDetails,
@@ -18,6 +18,7 @@ import {
   CardActions,
   CardContent,
   CardHeader,
+  Chip,
   Grid,
   IconButton,
   Rating,
@@ -30,6 +31,8 @@ import { ExpandMore, Favorite, Share, Star } from "@mui/icons-material";
 
 import moment from "moment";
 import styled from "@emotion/styled";
+import { useAppSelector } from "../../Redux/Store";
+// import { TabPanel } from "@mui/lab";
 const labels: { [index: string]: string } = {
   1: "Very sad",
   2: "Sad",
@@ -37,7 +40,31 @@ const labels: { [index: string]: string } = {
   4: "Happy",
   5: "Very Happy",
 };
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+     
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 function getLabelText(value: number) {
   return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
 }
@@ -56,12 +83,16 @@ const DoctorDetails = () => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const [ratingValue, setRatingValue] = React.useState<number | null>(2);
   const [hover, setHover] = React.useState(-1);
+  const [showLoginMessage,setShowLoginMessage]=useState(false)
+  const user=useAppSelector(state=>state.user)
+  const navigate=useNavigate()
   const handleExpandedChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    console.log(newValue)
     setTabValue(newValue);
   };
   const { Id } = useParams();
@@ -80,6 +111,40 @@ const DoctorDetails = () => {
       const slots = await getSlotsForDoctors(Id);
       setSlots(slots);
     }
+  }
+const getDate=(startDate:string)=>{
+  const date=new Date(startDate)
+  date.setHours(0,0,0,0)
+  return date.toISOString()
+}
+ function groupSlotsByDate(){
+  const group:any={}
+
+    slots.map(slot=>{
+      if(slot.size!==slot.count){
+        const slotDate=getDate(slot.startTime)
+         if(!group[slotDate]){
+          group[slotDate]=[]
+         }
+         group[slotDate].push(slot)
+      }
+    })
+    return group;
+  }
+  const groupedSlots=groupSlotsByDate()
+  console.log(groupedSlots)
+  const getSlotTime=(slot:slotTypes)=>{
+ const start=moment(slot.startTime).format("hh:mm a")
+ const end=moment(slot.endTime).format("hh:mm a")
+ return `${start}-${end}`
+  }
+  const bookSlots=(slots:slotTypes)=>{
+   if(!user){
+    setShowLoginMessage(true)
+   }
+   else{
+    navigate("/book-appointment")
+   }
   }
   return (
     <div>
@@ -128,20 +193,38 @@ const DoctorDetails = () => {
                 scrollButtons="auto"
                 aria-label="scrollable auto tabs example"
               >
-                {slots.map((slot) => {
+                {Object.keys(groupedSlots).map((slot,index) => {
                   return (
-                    <Tab label={moment(slot.startTime).format("MMM D, YYYY")} />
+                    <Tab label={moment(slot).format("MMM D, YYYY")}  id={`simple-tab-${index}`}
+                    aria-controls= {`simple-tabpanel-${index}`} />
                   );
                 })}
-                {/* <Tab label="Item One" />
-  <Tab label="Item Two" />
-  <Tab label="Item Three" />
-  <Tab label="Item Four" />
-  <Tab label="Item Five" />
-  <Tab label="Item Six" />
-  <Tab label="Item Seven" /> */}
+                
               </Tabs>
               </AppBar>
+               
+            )}
+            {
+              slots.length>0 &&   Object.keys(groupedSlots).map((slot,index) => {
+                return (
+                  <TabPanel value={tabValue} index={index}>
+                    <Box sx={{backgroundColor:"white", p:1}}>
+                   { groupedSlots[slot].map((slotData:slotTypes)=>(
+                     <Chip label={getSlotTime(slotData)} variant="outlined" color="primary" sx={{m:1}}
+                      onClick={()=>bookSlots(slotData)} 
+                      />
+                   ))}
+                   </Box>
+                  </TabPanel>
+                );
+              })
+              
+            }
+            {showLoginMessage && (
+              <Box>
+                <Typography sx={{fontSize:15, color:"red"}}>Please
+                  <Link to="/auth/login" style={{textDecoration:"none"}} > Sign in </Link>/ <Link to="/auth/signup" style={{textDecoration:"none"}} >Register </Link>  to book an appointment.</Typography>
+              </Box>
             )}
           </Grid>
           <Grid item xs={8} sx={{ backgroundColor: "white", mt: 3 }}>
@@ -409,7 +492,8 @@ const DoctorDetails = () => {
                     type="text"
                     placeholder="Write a Review"
                     style={{
-                      border: "1px divider",
+                      border:"1px solid grey",
+                      
                       borderRadius: 10,
                       padding: "40px 15px",
                     }}
@@ -417,7 +501,7 @@ const DoctorDetails = () => {
                   <br />
                   <Button
                     variant="outlined"
-                    sx={{ borderColor: "#3f51b5", color: "#3f51b5" ,mt:4, borderRadius:10, px:8}}
+                    sx={{ borderColor: "#3f51b5", color: "#3f51b5" ,mt:4, borderRadius:10, px:6}}
                   >
                     Submit
                   </Button>

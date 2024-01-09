@@ -407,7 +407,7 @@ console.log(url,open)
       </Box>
       <Box
         component="main"
-        sx={{ flexGrow: 1, p: 3,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)`, minHeight:"88vh" } }}
+        sx={{ flexGrow: 1, p: 2,backgroundColor: "#fafafa", width: { sm: `calc(100vw - ${drawerWidth}px)`, minHeight:"88vh" } }}
       >
         <Toolbar />
         <Toolbar />

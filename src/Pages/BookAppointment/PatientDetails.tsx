@@ -10,18 +10,41 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { useAppSelector } from "../../Redux/Store";
-interface PatientDetailsProps{
-    next:()=>void
+import React, { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../Redux/Store";
+import { validName } from "../../utils/Validation";
+import { setAppointmentData } from "../../Redux/slotsSlice";
+interface PatientDetailsProps {
+  next: () => void;
 }
-const PatientDetails = ({next}:PatientDetailsProps) => {
-  const user = useAppSelector((state) => state.user);
+const PatientDetails = ({ next }: PatientDetailsProps) => {
+  const user = useAppSelector((state) => state.userReducer.user);
+  const [forSelf, setForSelf] = useState(true);
+  const [patientName, setPatientName] = useState("");
+  const [patientMobileNumber, setPatientMobileNumber] = useState("");
+  const [nameError, setNameError] = useState(false);
+  const [mobileError, setMobileError] = useState(false);
+  const appointmentData = useAppSelector((state) => state.slotsReducer.data);
+  const dispatch = useAppDispatch();
+  console.log(appointmentData);
+  useEffect(() => {
+    if (forSelf && user) {
+      setPatientName(`${user.user.firstName} ${user.user.lastName}`);
+      setPatientMobileNumber(user.user.contactNumber);
+      setNameError(false);
+      setMobileError(false);
+    } else {
+      setPatientName("");
+      setPatientMobileNumber("");
+    }
+  }, [user, forSelf]);
   return (
     <Grid container>
       <Grid item xs={4} sx={{ m: "auto" }}>
         <Typography variant="h4">Patient Details</Typography>
-        <Box sx={{ mt: 2, border: 1, borderColor: "silver", p: 2,height:370 }}>
+        <Box
+          sx={{ mt: 2, border: 1, borderColor: "silver", p: 2, height: 370 }}
+        >
           <FormControl>
             <FormLabel
               id="demo-controlled-radio-buttons-group"
@@ -32,8 +55,10 @@ const PatientDetails = ({next}:PatientDetailsProps) => {
             <RadioGroup
               aria-labelledby="demo-controlled-radio-buttons-group"
               name="controlled-radio-buttons-group"
-              value="Myself"
-              // onChange={handleChange}
+              value={forSelf ? "Myself" : "Someone Else"}
+              onChange={() => {
+                setForSelf(!forSelf);
+              }}
             >
               <FormControlLabel
                 value="Myself"
@@ -55,33 +80,37 @@ const PatientDetails = ({next}:PatientDetailsProps) => {
             </Typography>
             <TextField
               variant="outlined"
+              error={nameError}
               label="Patient Name"
-              value={user && `${user.user.firstName} ${user.user.lastName}`}
-              disabled
+              value={patientName}
+              disabled={forSelf}
               fullWidth
+              helperText={nameError && "Please enter a valid name!"}
               sx={{ mt: 3 }}
+              onKeyUp={() => validName(patientName, setNameError)}
+              onChange={(e) => setPatientName(e.target.value)}
             />
             <TextField
               variant="outlined"
               label="Patient's Mobile number "
-              value={user && user.user.contactNumber}
-              disabled
+              value={patientMobileNumber}
+              disabled={forSelf}
               fullWidth
               sx={{ mt: 3 }}
+              onChange={(e) => setPatientMobileNumber(e.target.value)}
             />
-            <Typography sx={{ fontSize: 14, mt: 2}}>
-              Fee : Rs
+            <Typography sx={{ fontSize: 14, mt: 2 }}>
+              Fee : Rs{" "}
+              {
+                appointmentData?.slots?.hospital.doctors[0]
+                  .hospitalDoctorMapping.consultationFee
+              }
             </Typography>
           </Box>
         </Box>
         <Grid container spacing={1} sx={{ mt: 1 }}>
           <Grid item xs={6}>
-            <Button
-              variant="outlined"
-              fullWidth
-              disabled
-         
-            >
+            <Button variant="outlined" fullWidth disabled>
               Back
             </Button>
           </Grid>
@@ -91,7 +120,19 @@ const PatientDetails = ({next}:PatientDetailsProps) => {
               variant="contained"
               fullWidth
               sx={{ backgroundColor: "#3f51b5" }}
-              onClick={next}
+              onClick={() => {
+                if (!forSelf) {
+                  dispatch(
+                    setAppointmentData({
+                      ...appointmentData,
+                      otherName: patientName,
+                      otherMobileNumber: patientMobileNumber,
+                    })
+                  );
+                }
+                next()
+              }}
+              disabled={!forSelf && (!patientName || !patientMobileNumber)}
             >
               Next
             </Button>

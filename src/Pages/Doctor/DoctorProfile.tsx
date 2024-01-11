@@ -39,8 +39,8 @@ const DoctorProfile = () => {
   const [bio, setBio] = useState("self");
   const [success, setSuccess] = useState<string | boolean>(false);
   const [error, setError] = useState<string | boolean>(false);
-  const user = useAppSelector((state) => state.user);
-  const status = useAppSelector((state) => state.status);
+  const user = useAppSelector((state) => state.userReducer.user);
+  const status = useAppSelector((state) => state.userReducer.status);
   useEffect(() => {
     if (user) {
       setId(user.user.Id);

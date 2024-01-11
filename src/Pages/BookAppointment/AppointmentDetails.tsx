@@ -6,31 +6,41 @@ interface AppointmentDetailsProps {
   back: () => void;
 }
 const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
-  const user = useAppSelector((state) => state.user);
+  const appointmentData = useAppSelector((state) => state.slotsReducer.data);
+
+  console.log(appointmentData);
+  const user = useAppSelector((state) => state.userReducer.user);
   return (
     <Grid container>
       <Grid item xs={4} sx={{ m: "auto" }}>
         <Typography variant="h4">Appointment Details</Typography>
-        <Box sx={{ mt: 2, border: 1, borderColor: "silver", p: 2 ,height:370}}>
+        <Box
+          sx={{ mt: 2, border: 1, borderColor: "silver", p: 2, height: 370 }}
+        >
           <Grid container>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>Patient's name</Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>
-                {user?.user.firstName}
-                {user?.user.lastName}
+                {appointmentData?.otherName
+                  ? appointmentData.otherName
+                  : `${user?.user.firstName} ${user?.user.lastName}`}
               </Typography>
             </Grid>
           </Grid>
           <Divider />
           <Grid container>
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: 15 }}>Patient's contact number</Typography>
+              <Typography sx={{ fontSize: 15 }}>
+                Patient's contact number
+              </Typography>
             </Grid>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>
-                {user?.user.contactNumber}
+                {appointmentData?.otherMobileNumber
+                  ? appointmentData.otherMobileNumber
+                  : user?.user.contactNumber}
               </Typography>
             </Grid>
           </Grid>
@@ -41,7 +51,11 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
             </Grid>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>
-                Rs
+                Rs{" "}
+                {
+                  appointmentData?.slots?.hospital.doctors[0]
+                    .hospitalDoctorMapping.consultationFee
+                }
               </Typography>
             </Grid>
           </Grid>
@@ -51,9 +65,7 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
               <Typography sx={{ fontSize: 15 }}>Doctor's name</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: 15 }}>
-                Dr.Doctor
-              </Typography>
+              <Typography sx={{ fontSize: 15 }}>Dr. {appointmentData?.doctor?.user.firstName} {appointmentData?.doctor?.user.lastName}</Typography>
             </Grid>
           </Grid>
           <Divider />
@@ -63,7 +75,7 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
             </Grid>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>
-              Sunday, 14 Jan, 2024
+                Sunday, 14 Jan, 2024
               </Typography>
             </Grid>
           </Grid>
@@ -73,9 +85,7 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
               <Typography sx={{ fontSize: 15 }}>Appointment time</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: 15 }}>
-              01:00 pm - 01:30 pm
-              </Typography>
+              <Typography sx={{ fontSize: 15 }}>{appointmentData?.slots?.startTime}</Typography>
             </Grid>
           </Grid>
           <Divider />

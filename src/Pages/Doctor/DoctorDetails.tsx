@@ -31,7 +31,8 @@ import { ExpandMore, Favorite, Share, Star } from "@mui/icons-material";
 
 import moment from "moment";
 import styled from "@emotion/styled";
-import { useAppSelector } from "../../Redux/Store";
+import { useAppDispatch, useAppSelector } from "../../Redux/Store";
+import { setAppointmentData } from "../../Redux/slotsSlice";
 // import { TabPanel } from "@mui/lab";
 const labels: { [index: string]: string } = {
   1: "Very sad",
@@ -55,7 +56,6 @@ function TabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-     
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
@@ -83,18 +83,22 @@ const DoctorDetails = () => {
   const [expanded, setExpanded] = React.useState<string | false>(false);
   const [ratingValue, setRatingValue] = React.useState<number | null>(2);
   const [hover, setHover] = React.useState(-1);
-  const [showLoginMessage,setShowLoginMessage]=useState(false)
-  const user=useAppSelector(state=>state.user)
-  const navigate=useNavigate()
+  const [showLoginMessage, setShowLoginMessage] = useState(false);
+  const user = useAppSelector((state) => state.userReducer.user);
+  const navigate = useNavigate();
+  const dispatch=useAppDispatch()
+
+  
   const handleExpandedChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    console.log(newValue)
+    console.log(newValue);
     setTabValue(newValue);
   };
+
   const { Id } = useParams();
   useEffect(() => {
     getDoctorsdata();
@@ -112,40 +116,41 @@ const DoctorDetails = () => {
       setSlots(slots);
     }
   }
-const getDate=(startDate:string)=>{
-  const date=new Date(startDate)
-  date.setHours(0,0,0,0)
-  return date.toISOString()
-}
- function groupSlotsByDate(){
-  const group:any={}
+  const getDate = (startDate: string) => {
+    const date = new Date(startDate);
+    date.setHours(0, 0, 0, 0);
+    return date.toISOString();
+  };
+  function groupSlotsByDate() {
+    const group: any = {};
 
-    slots.map(slot=>{
-      if(slot.size!==slot.count){
-        const slotDate=getDate(slot.startTime)
-         if(!group[slotDate]){
-          group[slotDate]=[]
-         }
-         group[slotDate].push(slot)
+    slots.map((slot) => {
+      if (slot.size !== slot.count) {
+        const slotDate = getDate(slot.startTime);
+        if (!group[slotDate]) {
+          group[slotDate] = [];
+        }
+        group[slotDate].push(slot);
       }
-    })
+    });
     return group;
   }
-  const groupedSlots=groupSlotsByDate()
-  console.log(groupedSlots)
-  const getSlotTime=(slot:slotTypes)=>{
- const start=moment(slot.startTime).format("hh:mm a")
- const end=moment(slot.endTime).format("hh:mm a")
- return `${start}-${end}`
-  }
-  const bookSlots=(slots:slotTypes)=>{
-   if(!user){
-    setShowLoginMessage(true)
-   }
-   else{
-    navigate("/book-appointment")
-   }
-  }
+  const groupedSlots = groupSlotsByDate();
+  console.log(groupedSlots);
+  const getSlotTime = (slot: slotTypes) => {
+    const start = moment(slot.startTime).format("hh:mm a");
+    const end = moment(slot.endTime).format("hh:mm a");
+    return `${start}-${end}`;
+  };
+  const bookSlots = (slots: slotTypes) => {
+    if (!user) {
+      setShowLoginMessage(true);
+    } else {
+      dispatch(setAppointmentData({slots,doctor}))
+    
+      navigate("/book-appointment");
+    }
+  };
   return (
     <div>
       {doctor && (
@@ -182,53 +187,74 @@ const getDate=(startDate:string)=>{
             {!slots.length ? (
               <Typography sx={{ fontSize: 15 }}>No slot available</Typography>
             ) : (
-                <AppBar position="static" color="default">
-
-              
-              <Tabs
-                value={tabValue}
-                onChange={handleChange}
-                variant="scrollable"
-                
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-              >
-                {Object.keys(groupedSlots).map((slot,index) => {
-                  return (
-                    <Tab label={moment(slot).format("MMM D, YYYY")}  id={`simple-tab-${index}`}
-                    aria-controls= {`simple-tabpanel-${index}`} />
-                  );
-                })}
-                
-              </Tabs>
+              <AppBar position="static" color="default">
+                <Tabs
+                  value={tabValue}
+                  onChange={handleChange}
+                  variant="scrollable"
+                  scrollButtons="auto"
+                  aria-label="scrollable auto tabs example"
+                >
+                  {Object.keys(groupedSlots).map((slot, index) => {
+                    return (
+                      <Tab
+                        label={moment(slot).format("MMM D, YYYY")}
+                        id={`simple-tab-${index}`}
+                        aria-controls={`simple-tabpanel-${index}`}
+                      />
+                    );
+                  })}
+                </Tabs>
               </AppBar>
-               
             )}
-            {
-              slots.length>0 &&   Object.keys(groupedSlots).map((slot,index) => {
+            {slots.length > 0 &&
+              Object.keys(groupedSlots).map((slot, index) => {
                 return (
                   <TabPanel value={tabValue} index={index}>
-                    <Box sx={{backgroundColor:"white", p:1}}>
-                   { groupedSlots[slot].map((slotData:slotTypes)=>(
-                     <Chip label={getSlotTime(slotData)} variant="outlined" color="primary" sx={{m:1}}
-                      onClick={()=>bookSlots(slotData)} 
-                      />
-                   ))}
-                   </Box>
+                    <Box sx={{ backgroundColor: "white", p: 1 }}>
+                      {groupedSlots[slot].map((slotData: slotTypes) => (
+                        <Chip
+                          label={
+                            <>
+                              {getSlotTime(slotData)}
+                              <br />
+                             Hospital: {slotData.hospital.hospitalName} <br />
+                              Consultation Fee:
+                              {
+                                slotData.hospital.doctors[0].hospitalDoctorMapping
+                                  .consultationFee
+                              }
+                            </>
+                          }
+                          variant="outlined"
+                          color="primary"
+                          sx={{ m: 1, height: "auto" }}
+                          onClick={() => bookSlots(slotData)}
+                        />
+                      ))}
+                    </Box>
                   </TabPanel>
                 );
-              })
-              
-            }
+              })}
             {showLoginMessage && (
               <Box>
-                <Typography sx={{fontSize:15, color:"red"}}>Please
-                  <Link to="/auth/login" style={{textDecoration:"none"}} > Sign in </Link>/ <Link to="/auth/signup" style={{textDecoration:"none"}} >Register </Link>  to book an appointment.</Typography>
+                <Typography sx={{ fontSize: 15, color: "red" }}>
+                  Please
+                  <Link to="/auth/login" style={{ textDecoration: "none" }}>
+                    {" "}
+                    Sign in{" "}
+                  </Link>
+                  /{" "}
+                  <Link to="/auth/signup" style={{ textDecoration: "none" }}>
+                    Register{" "}
+                  </Link>{" "}
+                  to book an appointment.
+                </Typography>
               </Box>
             )}
           </Grid>
           <Grid item xs={8} sx={{ backgroundColor: "white", mt: 3 }}>
-          <Accordion
+            <Accordion
               expanded={expanded === "panel1"}
               onChange={handleExpandedChange("panel1")}
             >
@@ -245,28 +271,34 @@ const getDate=(startDate:string)=>{
                     fontSize: 14,
                   }}
                 >
-                 Hospitals
+                  Hospitals
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-              {doctor.hospitals.length ?
-                <ul>
-              
-                  {  doctor.hospitals.map((hospital) => (
-                      <li style={{ marginBottom: 1,}}>
-                        <Typography sx={{fontWeight:"bold", fontSize: 14 }}>{hospital.hospitalName}</Typography>
-                        <Box sx={{display:"flex"}}>
-                        <Typography  sx={{ fontSize: 14 , mr:3}}>Position:{hospital.hospitalDoctorMapping.position}</Typography>
-                        <Typography sx={{ fontSize: 14 }}>Consultation Fee:{hospital.hospitalDoctorMapping.consultationFee}</Typography>
+                {doctor.hospitals.length ? (
+                  <ul>
+                    {doctor.hospitals.map((hospital) => (
+                      <li style={{ marginBottom: 1 }}>
+                        <Typography sx={{ fontWeight: "bold", fontSize: 14 }}>
+                          {hospital.hospitalName}
+                        </Typography>
+                        <Box sx={{ display: "flex" }}>
+                          <Typography sx={{ fontSize: 14, mr: 3 }}>
+                            Position:{hospital.hospitalDoctorMapping.position}
+                          </Typography>
+                          <Typography sx={{ fontSize: 14 }}>
+                            Consultation Fee:
+                            {hospital.hospitalDoctorMapping.consultationFee}
+                          </Typography>
                         </Box>
-                        
                       </li>
                     ))}
-                </ul>:
-                      <Typography sx={{ fontSize: 14 }}>
-                      No hospitals available
-                    </Typography>
-                }
+                  </ul>
+                ) : (
+                  <Typography sx={{ fontSize: 14 }}>
+                    No hospitals available
+                  </Typography>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -290,19 +322,19 @@ const getDate=(startDate:string)=>{
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-              {doctor.specialities.length ?
-                <ul>
-              
-                  {  doctor.specialities.map((speciality) => (
+                {doctor.specialities.length ? (
+                  <ul>
+                    {doctor.specialities.map((speciality) => (
                       <li style={{ marginBottom: 1, fontSize: 14 }}>
                         {speciality.name}
                       </li>
                     ))}
-                </ul>:
-                      <Typography sx={{ fontSize: 14 }}>
-                      No specialities available
-                    </Typography>
-                }
+                  </ul>
+                ) : (
+                  <Typography sx={{ fontSize: 14 }}>
+                    No specialities available
+                  </Typography>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -326,19 +358,19 @@ const getDate=(startDate:string)=>{
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {doctor.Qualification ?
-                <ul>
-                  {
-                    doctor.Qualification.map((item) => (
+                {doctor.Qualification ? (
+                  <ul>
+                    {doctor.Qualification.map((item) => (
                       <li style={{ marginBottom: 1, fontSize: 14 }}>
                         {item.degree}
                       </li>
                     ))}
-                </ul>:
-                <Typography sx={{ fontSize: 14 }}>
-                No qualifications available
-              </Typography>}
-                
+                  </ul>
+                ) : (
+                  <Typography sx={{ fontSize: 14 }}>
+                    No qualifications available
+                  </Typography>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -362,18 +394,18 @@ const getDate=(startDate:string)=>{
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {doctor.experience ?
-                <ul>
-                  {
-                    doctor.experience.map((item) => (
+                {doctor.experience ? (
+                  <ul>
+                    {doctor.experience.map((item) => (
                       <li style={{ marginBottom: 1, fontSize: 14 }}>
                         {item.position} at {item.hospitalName}({item.fromYear}-
                         {item.toYear})
                       </li>
                     ))}
-                </ul>:<Typography sx={{ fontSize: 14 }}>
-                      No experience
-                    </Typography>}
+                  </ul>
+                ) : (
+                  <Typography sx={{ fontSize: 14 }}>No experience</Typography>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -397,17 +429,19 @@ const getDate=(startDate:string)=>{
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
-                {doctor.languages ?
-                <ul>
-                  {
-                    doctor.languages.map((language) => (
+                {doctor.languages ? (
+                  <ul>
+                    {doctor.languages.map((language) => (
                       <li style={{ marginBottom: 1, fontSize: 14 }}>
                         {language.name}
                       </li>
                     ))}
-                </ul>:  <Typography sx={{ fontSize: 14 }}>
-                No language available
-              </Typography>}
+                  </ul>
+                ) : (
+                  <Typography sx={{ fontSize: 14 }}>
+                    No language available
+                  </Typography>
+                )}
               </AccordionDetails>
             </Accordion>
             <Accordion
@@ -492,8 +526,8 @@ const getDate=(startDate:string)=>{
                     type="text"
                     placeholder="Write a Review"
                     style={{
-                      border:"1px solid grey",
-                      
+                      border: "1px solid grey",
+
                       borderRadius: 10,
                       padding: "40px 15px",
                     }}
@@ -501,7 +535,13 @@ const getDate=(startDate:string)=>{
                   <br />
                   <Button
                     variant="outlined"
-                    sx={{ borderColor: "#3f51b5", color: "#3f51b5" ,mt:4, borderRadius:10, px:6}}
+                    sx={{
+                      borderColor: "#3f51b5",
+                      color: "#3f51b5",
+                      mt: 4,
+                      borderRadius: 10,
+                      px: 6,
+                    }}
                   >
                     Submit
                   </Button>

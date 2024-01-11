@@ -16,7 +16,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [page,setPage]=useState(1)
   
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.userReducer.user);
   let start:number=0;
   let end:number=0;
   let count:number=0

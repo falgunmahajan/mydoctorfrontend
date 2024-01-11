@@ -141,4 +141,13 @@ export type slotTypes = {
   size: number;
   startTime: string;
   endTime: string;
+  hospital:{
+    Id:string,
+    hospitalName:string,
+    doctors:Array<{
+      hospitalDoctorMapping:{
+        consultationFee:string
+      }
+    }>
+  }
 };

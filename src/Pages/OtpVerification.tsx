@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
 import { useAppDispatch, useAppSelector } from '../Redux/Store';
 import axios, { AxiosError } from 'axios';
-import { fetchUser } from '../Redux/CreateSlice';
+import { fetchUser } from '../Redux/userSlice';
 interface CurrentUserTypes{
     email:string,
     password:"string"
@@ -35,7 +35,7 @@ const OtpVerification = () => {
     const [currentuser, setCurrentUser] = useState({} as CurrentUserTypes);
     const [progress, setProgress] = useState(0)
     const dispatch=useAppDispatch();
-    const login = useAppSelector((state) => state.Login);
+    const login = useAppSelector((state) => state.userReducer.Login);
     console.log(user)
     useEffect(() => {
         console.log(JSON.parse(localStorage.getItem("user")||"{}"))

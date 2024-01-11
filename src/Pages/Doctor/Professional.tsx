@@ -19,8 +19,8 @@ const Professional = () => {
     const [success, setSuccess] = useState<string|boolean>(false);
     const [error, setError] = useState<string|boolean>(false);
     const [hospital,setHospital]=useState([] as hospitalType[])
-    const user = useAppSelector((state) => state.user);
-    const status = useAppSelector((state) => state.status);
+    const user = useAppSelector((state) => state.userReducer.user);
+    const status = useAppSelector((state) => state.userReducer.status);
     const [profile, setProfile] = useState<profileTypes[]|null>(null);
   
     useEffect(()=>{

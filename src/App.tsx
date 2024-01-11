@@ -24,6 +24,7 @@ import Search from './Pages/Search';
 import DoctorDetails from './Pages/Doctor/DoctorDetails';
 import PatientAppointment from './Pages/Patient/PatientAppointment';
 import BookAppointment from './Pages/BookAppointment/BookAppointment';
+
 export const drawerWidth = 220;
 
 function App() {

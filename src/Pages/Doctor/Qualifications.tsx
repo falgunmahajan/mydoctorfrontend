@@ -19,11 +19,11 @@ interface QualificationType {
   yearErr?: string;
 }
 const Qualifications = () => {
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.userReducer.user);
   const [edit, setEdit] = useState(false);
   const [success, setSuccess] = useState<string | boolean>(false);
   const [error, setError] = useState<string | boolean>(false);
-  const status = useAppSelector((state) => state.status);
+  const status = useAppSelector((state) => state.userReducer.status);
   const [qualification, setQualification] = useState<null|QualificationType[]>(null);
   useEffect(() => {
     setQualificationData();

@@ -29,7 +29,7 @@ interface ExperienceType {
   endErr?: string;
 }
 const Experience = () => {
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.userReducer.user);
   const [edit, setEdit] = useState(false);
   const [licenceNumber, setLicenceNumber] = useState("");
   const [licenceErr, setLicenceErr] = useState<string | boolean>(false);
@@ -39,7 +39,7 @@ const Experience = () => {
   ] as speciality[]);
   const [success, setSuccess] = useState<string | boolean>(false);
   const [error, setError] = useState<string | boolean>(false);
-  const status = useAppSelector((state) => state.status);
+  const status = useAppSelector((state) => state.userReducer.status);
   const [experience, setExperience] = useState<null | ExperienceType[]>();
 
   useEffect(() => {

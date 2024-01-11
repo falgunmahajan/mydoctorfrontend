@@ -6,7 +6,7 @@ import axios from 'axios'
 import { useAppSelector } from '../../Redux/Store'
 
 const ChangePassword = () => {
-    const user=useAppSelector(state=>state.user)
+    const user=useAppSelector(state=>state.userReducer.user)
   const [newPassword, setNewPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
   const [oldpasswordErrorMsg, setoldPasswordErrorMsg] = useState(false);

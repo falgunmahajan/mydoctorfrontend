@@ -29,7 +29,7 @@ import {
   Search,
 } from "@mui/icons-material";
 import { useAppDispatch, useAppSelector } from "../Redux/Store";
-import { fetchUser } from "../Redux/CreateSlice";
+import { fetchUser } from "../Redux/userSlice";
 
 import { getSpecialities } from "../utils/getSpecialities";
 import SymptonsMenu from "./SymptonsMenu";
@@ -71,9 +71,9 @@ export default function Navbar(props: Props) {
   const id = open ? "simple-popover" : undefined;
   const [specialities, setSpecialities] = React.useState([] as Specialities[]);
 
-  const login = useAppSelector((state) => state.Login);
-  const status = useAppSelector((state) => state.status);
-  const user=useAppSelector((state)=>state.user)
+  const login = useAppSelector((state) => state.userReducer.Login);
+  const status = useAppSelector((state) => state.userReducer.status);
+  const user=useAppSelector((state)=>state.userReducer.user)
   const dispatch = useAppDispatch();
   const [searchValue, setSearchValue] = React.useState("");
   const [searchSpeciality,setSearchSpeciality]=React.useState<string|null>()

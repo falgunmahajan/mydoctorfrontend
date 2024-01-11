@@ -42,7 +42,7 @@ export default function Sidebar(props: Props) {
   const navigate = useNavigate();
   const [url, setUrl] = React.useState(window.location.pathname);
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.userReducer.user);
   const [open, setOpen] = React.useState(
     url === "/myprofile" ||
       url === "/changepassword" ||

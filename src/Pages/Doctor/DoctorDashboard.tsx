@@ -7,18 +7,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  DateCalendar,
-  LocalizationProvider,
-  TimeField,
-  TimePicker,
-} from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import axios from "axios";
-import dayjs, { Dayjs } from "dayjs";
+
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../Redux/Store";
-import { start } from "repl";
+
 import { Close } from "@mui/icons-material";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -36,7 +30,8 @@ const DoctorDashboard = () => {
   const [startErr, setStartErr] = useState("");
   const [slots, setSlots] = useState([] as slotTypes[]);
   const [size, setSize] = useState<number | null>(2);
-  const user = useAppSelector((state) => state.user);
+  const [hospital,setHospital]=useState({Id:"",hospitalName:""});
+  const user = useAppSelector((state) => state.userReducer.user);
   const getEndTime = () => {
     const endTime = new Date();
     const startSplitTime = startTime.split(":");
@@ -97,6 +92,7 @@ console.log(date)
   const handleSubmit = () => {
     console.log(startTime);
     console.log(date);
+    console.log(hospital)
     const startSplitTime = startTime.split(":");
     let startDate, endDate;
 
@@ -114,6 +110,7 @@ console.log(date)
       const res = axios.post("http://localhost:4000/slots", {
         booked: true,
         doctorId: user?.Id,
+        hospitalId:hospital.Id,
         size: size,
         startTime: startDate,
         endTime: endDate,
@@ -151,12 +148,38 @@ console.log(date)
           <Calendar value={date} onChange={setDate} minDate={new Date()} />
         </Grid>
         <Grid item xs={12} md={5} lg={3} sx={{ ml: 2, mt: 2 }}>
+        {user?.hospitals && (
+                <Autocomplete
+                  id="tags-outlined"
+                
+                  options={user.hospitals}
+                  value={hospital}
+                  onChange={(event, value) => {
+                    console.log(value);
+                    if(value){
+                      setHospital(
+                        {
+                          hospitalName: value?.hospitalName,
+                           Id: value?.Id,
+                         })
+                    }
+                   
+                  
+                  }}
+                  getOptionLabel={(option) => option.hospitalName}
+                  filterSelectedOptions
+                  renderInput={(params) => (
+                    <TextField {...params} required label="Select Hospital" fullWidth />
+                  )}
+                />
+              )}
           <TextField
           error={Boolean(startErr)}
             type="time"
             label="Start Time"
             fullWidth
             value={startTime}
+            sx={{ mt: 2 }}
             onChange={(e) => setStartTime(e.target.value)}
             onBlur={(e) => isStartError(e.target.value)}
             helperText={startErr}
@@ -187,7 +210,7 @@ console.log(date)
             <Button
               variant="contained"
               sx={{ backgroundColor: "#3f51b5", px: 4 }}
-              disabled={!validTime(startTime)}
+              disabled={!validTime(startTime) || !hospital.Id}
               onClick={handleSubmit}
             >
               Create Slot
@@ -221,7 +244,7 @@ console.log(date)
                   borderColor: "silver",
                   mt: 2,
                   width: { xs: "400px", lg: "250px" },
-                  height: "60px",
+                  height:"80px",
                   ml: 5,
                   p: 1,
                 }}
@@ -231,8 +254,12 @@ console.log(date)
                     {getTime(item.startTime)} - {getTime(item.endTime)}
                   </Typography>
                   <Typography>
+                    Hospital:{item.hospital.hospitalName}  
+                  </Typography>
+                  <Typography>
                     Slot size:{item.size} Booked:{item.count}
                   </Typography>
+                 
                 </Box>
                 <IconButton onClick={() => deleteSlots(item.Id)}>
                   <Close />

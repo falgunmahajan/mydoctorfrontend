@@ -1,6 +1,8 @@
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useAppSelector } from "../../Redux/Store";
+import moment from "moment";
+import { slotTypes } from "../../utils/Doctors";
 interface AppointmentDetailsProps {
   next: () => void;
   back: () => void;
@@ -10,6 +12,11 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
 
   console.log(appointmentData);
   const user = useAppSelector((state) => state.userReducer.user);
+  const getSlotTime = (slot: slotTypes) => {
+    const start = moment(slot.startTime).format("hh:mm a");
+    const end = moment(slot.endTime).format("hh:mm a");
+    return `${start} - ${end}`;
+  };
   return (
     <Grid container>
       <Grid item xs={4} sx={{ m: "auto" }}>
@@ -65,7 +72,10 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
               <Typography sx={{ fontSize: 15 }}>Doctor's name</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: 15 }}>Dr. {appointmentData?.doctor?.user.firstName} {appointmentData?.doctor?.user.lastName}</Typography>
+              <Typography sx={{ fontSize: 15 }}>
+                Dr. {appointmentData?.doctor?.user.firstName}{" "}
+                {appointmentData?.doctor?.user.lastName}
+              </Typography>
             </Grid>
           </Grid>
           <Divider />
@@ -75,7 +85,7 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
             </Grid>
             <Grid item xs={6}>
               <Typography sx={{ fontSize: 15 }}>
-                Sunday, 14 Jan, 2024
+                {moment(appointmentData?.slots?.startTime).format("dddd, D MMM, YYYY")}
               </Typography>
             </Grid>
           </Grid>
@@ -85,7 +95,9 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
               <Typography sx={{ fontSize: 15 }}>Appointment time</Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography sx={{ fontSize: 15 }}>{appointmentData?.slots?.startTime}</Typography>
+              <Typography sx={{ fontSize: 15 }}>
+                {appointmentData?.slots && getSlotTime(appointmentData.slots)}
+              </Typography>
             </Grid>
           </Grid>
           <Divider />

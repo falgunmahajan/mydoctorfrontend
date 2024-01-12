@@ -92,11 +92,21 @@ const PatientDetails = ({ next }: PatientDetailsProps) => {
             />
             <TextField
               variant="outlined"
+              error={mobileError}
               label="Patient's Mobile number "
               value={patientMobileNumber}
               disabled={forSelf}
               fullWidth
               sx={{ mt: 3 }}
+              helperText={mobileError && "Please enter a valid 10-digit mobile number!"}
+              onKeyUp={()=>{
+                if(!(/^[1-9][0-9]{9}$/).test(patientMobileNumber) || patientMobileNumber.length<10){
+                  setMobileError(true)
+                }
+                else{
+                  setMobileError(false)
+                }
+              }}
               onChange={(e) => setPatientMobileNumber(e.target.value)}
             />
             <Typography sx={{ fontSize: 14, mt: 2 }}>

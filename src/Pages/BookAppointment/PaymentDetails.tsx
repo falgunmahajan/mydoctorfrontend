@@ -130,8 +130,8 @@ const PaymentDetails = ({ next, back }: PaymentDetailsProps) => {
       cvv:securityCode,
       expiryDate:moment(expiryDate).format("MM-YYYY"),
       doctorId:appointmentData?.doctor?.Id,
-      slotsId:appointmentData?.slots?.Id
-
+      slotsId:appointmentData?.slots?.Id,
+      consultancyPrice:appointmentData?.slots?.hospital.doctors[0].hospitalDoctorMapping.consultationFee
     },{
       headers:{
         Authorization:token

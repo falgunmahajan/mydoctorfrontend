@@ -24,6 +24,7 @@ import Search from './Pages/Search';
 import DoctorDetails from './Pages/Doctor/DoctorDetails';
 import PatientAppointment from './Pages/Patient/PatientAppointment';
 import BookAppointment from './Pages/BookAppointment/BookAppointment';
+import DoctorAppointment from './Pages/Doctor/DoctorAppointment';
 
 export const drawerWidth = 220;
 
@@ -52,6 +53,7 @@ function App() {
     <Route path="/doctor-dashboard" element={<DoctorDashboard/>}/>
     <Route path="/search" element={<Search/>}/>
     <Route path="/doctor/:Id" element={<DoctorDetails/>}/>
+    <Route path="/doctor-appointments" element={<DoctorAppointment/>}/>
     <Route path="/book-appointment" element={<BookAppointment/>}/>
     </Route>
     <Route path="/auth" element={<TabPage />}>

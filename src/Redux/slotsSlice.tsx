@@ -20,8 +20,11 @@ const slotSlice = createSlice({
     setAppointmentData(state,action){
         state.data=action.payload
         
+    },
+    deleteAppointmentData(state){
+      state.data=null
     }
   },
 });
-export const {setAppointmentData}=slotSlice.actions;
+export const {setAppointmentData,deleteAppointmentData}=slotSlice.actions;
 export const slotsReducer=slotSlice.reducer

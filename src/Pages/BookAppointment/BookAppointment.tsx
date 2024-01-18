@@ -1,12 +1,19 @@
 import { Box, Step, StepButton, Stepper } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import PatientDetails from "./PatientDetails";
 import AppointmentDetails from "./AppointmentDetails";
 import PaymentDetails from "./PaymentDetails";
+import { useAppSelector } from "../../Redux/Store";
+import { useNavigate } from "react-router-dom";
 
 const BookAppointment = () => {
   const steps = ["Patient Details", "Appointment Details", "Payment Details"];
   const [activeStep, setActiveStep] = React.useState(0);
+  const navigate = useNavigate()
+  const appointmentData = useAppSelector((state) => state.slotsReducer.data);
+  useEffect(()=>{
+  if(!appointmentData) navigate("/")
+  },[])
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };

@@ -40,7 +40,7 @@ const PatientDetails = ({ next }: PatientDetailsProps) => {
   }, [user, forSelf]);
   return (
     <Grid container>
-      <Grid item xs={4} sx={{ m: "auto" }}>
+      <Grid item xs={5} xl={4} sx={{ m: "auto" }}>
         <Typography variant="h4">Patient Details</Typography>
         <Box
           sx={{ mt: 2, border: 1, borderColor: "silver", p: 2, height: 370 }}

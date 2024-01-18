@@ -18,10 +18,12 @@ import unionpay from "../../svg/unionpay.svg";
 import american_express from "../../svg/american_express.svg";
 import master_card from "../../svg/master_card.svg";
 import jcb from "../../svg/jcb.svg";
-import { useAppSelector } from "../../Redux/Store";
+import { useAppDispatch, useAppSelector } from "../../Redux/Store";
 import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { deleteAppointmentData } from "../../Redux/slotsSlice";
 interface PaymentDetailsProps {
   next: () => void;
   back: () => void;
@@ -92,6 +94,9 @@ const PaymentDetails = ({ next, back }: PaymentDetailsProps) => {
   const [expiryError, setExpiryError] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
   const appointmentData = useAppSelector((state) => state.slotsReducer.data);
+  const navigate=useNavigate()
+  const dispatch = useAppDispatch();
+  let success:string,error:string;
   const validCardNumber = () => {
     const regex = /^\d{16}$/;
     if (!regex.test(cardNumber)) {
@@ -124,28 +129,41 @@ const PaymentDetails = ({ next, back }: PaymentDetailsProps) => {
     expiryDate.setMonth(expiryMonth)
     const user=JSON.parse(localStorage.getItem("user")||"{}")
        
-        const token = user.accessToken
-    const res=await axios.post("http://localhost:4000/payment", {
-      cardNumber,
-      cvv:securityCode,
-      expiryDate:moment(expiryDate).format("MM-YYYY"),
-      doctorId:appointmentData?.doctor?.Id,
-      slotsId:appointmentData?.slots?.Id,
-      consultancyPrice:appointmentData?.slots?.hospital.doctors[0].hospitalDoctorMapping.consultationFee
-    },{
-      headers:{
-        Authorization:token
-    },
+        const token = user.accessToken;
+        try {
+          const res=await axios.post("http://localhost:4000/payment", {
+            cardNumber,
+            cvv:securityCode,
+            expiryDate:moment(expiryDate).format("MM-YYYY"),
+            doctorId:appointmentData?.doctor?.Id,
+            slotsId:appointmentData?.slots?.Id,
+            consultancyPrice:appointmentData?.slots?.hospital.doctors[0].hospitalDoctorMapping.consultationFee,
+            otherName:appointmentData?.otherName,
+            otherMobileNumber:appointmentData?.otherMobileNumber
+          },{
+            headers:{
+              Authorization:token
+          },
+         
+          })
+          success="Appointment is booked successfully!"
+        } catch (err) {
+          error="Appointment booking failed!"
+        }
    
-    })
     setShowLoading(false)
+    dispatch(deleteAppointmentData())
+  navigate("/appointments",{state:{
+    success,
+    error
+  }})
   }
   const disabledNextButton =
     !validCardNumber() ||
     !validExpiryDate() ||
     !validSecurityCode() ||
     showLoading;
-  return (
+  return  (
     <Grid container>
       <Grid item xs={7} xl={4} sx={{ m: "auto" }}>
         <Typography variant="h4">Appointment Details</Typography>

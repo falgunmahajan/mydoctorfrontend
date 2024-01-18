@@ -19,7 +19,7 @@ const AppointmentDetails = ({ next, back }: AppointmentDetailsProps) => {
   };
   return (
     <Grid container>
-      <Grid item xs={4} sx={{ m: "auto" }}>
+      <Grid item xs={6} xl={4} sx={{ m: "auto" }}>
         <Typography variant="h4">Appointment Details</Typography>
         <Box
           sx={{ mt: 2, border: 1, borderColor: "silver", p: 2, height: 370 }}

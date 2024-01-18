@@ -1,12 +1,20 @@
-import { Box, FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Alert, Box, FormControl, Grid, MenuItem, Select, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const PatientAppointment = () => {
     const [value,setValue]=useState(10)
-   
-  
+   const location=useLocation()
+   console.log(location);
+   const success=location.state?location.state.success:""
+   const error=location.state?location.state.error:""
+  useEffect(()=>{
+
+  },[])
   return (
     <div>
+      {success && <Alert severity="success">{success}</Alert>}
+      {error && <Alert severity="error">{error}</Alert>}
         <Grid container >
         <Grid item xs={6}>
       <Typography

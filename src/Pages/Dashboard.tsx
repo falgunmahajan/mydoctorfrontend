@@ -10,6 +10,7 @@ import { DoctorsTypes, getDoctors, slotTypes } from "../utils/Doctors";
 import DoctorsCard from "../components/DoctorsCard";
 import axios from "axios";
 import { useAppSelector } from "../Redux/Store";
+import Footer from "../components/Footer";
 const Dashboard = () => {
   const [specialities, setSpecialities] = useState([] as SpecialitiesTypes[]);
   const [doctors, setDoctors] = useState([] as DoctorsTypes[]);
@@ -132,6 +133,7 @@ const Dashboard = () => {
         <Grid item xs={12}>
         {doctors.length && <Pagination count={count} page={page} onChange={(event, value) =>setPage(value)} sx={{display:"flex" ,justifyContent:"center"}} />}</Grid>
       </Grid>
+     
     </>
   );
 };

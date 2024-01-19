@@ -217,6 +217,11 @@ setSearchValue("")
                       vertical: "top",
                       horizontal: "left",
                     }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+            
                     sx={{ mt: 1 }}
                   >
                     <List disablePadding>

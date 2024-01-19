@@ -25,6 +25,7 @@ import DoctorDetails from './Pages/Doctor/DoctorDetails';
 import PatientAppointment from './Pages/Patient/PatientAppointment';
 import BookAppointment from './Pages/BookAppointment/BookAppointment';
 import DoctorAppointment from './Pages/Doctor/DoctorAppointment';
+import NotFound from './Pages/NotFound';
 
 export const drawerWidth = 220;
 
@@ -37,8 +38,10 @@ function App() {
   return (
     <>
    <Routes>
+   <Route path="*" element={<NotFound />} />
    <Route path="/" element={<Navbar handleDrawerToggle={handleDrawerToggle}/>}>
     <Route path="/" element={ <Sidebar mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle}/>}>
+      
    
     <Route path="/" element={<Dashboard />} />
    

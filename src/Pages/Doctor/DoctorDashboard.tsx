@@ -89,7 +89,7 @@ console.log(date)
   };
 
  
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     console.log(startTime);
     console.log(date);
     console.log(hospital)
@@ -107,7 +107,7 @@ console.log(date)
     console.log(startDate, endDate);
 
     try {
-      const res = axios.post("http://localhost:4000/slots", {
+      const res =await axios.post("http://localhost:4000/slots", {
         booked: true,
         doctorId: user?.Id,
         hospitalId:hospital.Id,
@@ -132,8 +132,8 @@ console.log(date)
 
     return `${hours}:${minutes} ${ampm}`;
   };
-  const deleteSlots=(id:string)=>{
-    const res=axios.delete(`http://localhost:4000/slots?slotsId=${id}`)
+  const deleteSlots=async(id:string)=>{
+    const res=await axios.delete(`http://localhost:4000/slots?slotsId=${id}`)
     getSlots()
   }
   return (
